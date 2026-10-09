@@ -3,7 +3,7 @@
 接收函数自动质量筛选：给出 `.eqr` 文件目录，生成保留文件名单 `record`。
 提供 **单频与多频模型、实际训练权重、命令行、Python API 和 HTTP API**。
 
-v0.1.4 支持自定义阈值、选择滤波视图，以及将不同采样率的 SAC 重采样到模型网格。
+v0.1.5 支持自定义阈值、选择滤波视图，以及将不同采样率的 SAC 重采样到模型网格。
 
 **8 份 Reference 权重直接随源码和 pip 安装包提供**，无需再下载模型；全部
 **19 个配置、53 份已训练模型包**同时放在[本仓库 Releases](https://github.com/cangyeone/dnn-rfqc-community/releases/tag/v0.1.3)。
@@ -19,7 +19,7 @@ v0.1.4 支持自定义阈值、选择滤波视图，以及将不同采样率的 
 需要 Python 3.10 或以上，推荐单独的虚拟环境。可直接通过 pip 安装 wheel，无需 Git：
 
 ```bash
-python -m pip install https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.1.4/rfqc_bench-0.1.4-py3-none-any.whl
+python -m pip install https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.1.5/rfqc_bench-0.1.5-py3-none-any.whl
 rfqc-bench doctor
 ```
 
@@ -39,7 +39,7 @@ HTTP 服务需要额外依赖，在仓库目录运行 `python -m pip install -e 
 或直接安装指定版本：
 
 ```bash
-python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.4"
+python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.5"
 ```
 
 为兼容原接口，**pip 包名仍为 `rfqc-bench`，Python 导入名为 `rfqc_bench`**。
@@ -110,16 +110,17 @@ rfqc-bench screen-eqr "/path/to/flat_eqr" --gaussian 3
 
 ## 4. 输出 record
 
-默认在输入目录生成 `record`：UTF-8，无表头，每行一个相对于输入目录的保留路径。
+默认在输入目录生成 `record`：UTF-8，无表头，每行一个去重后的 `.eqr` 文件名，
+不含 `AG*/` 或台站等目录前缀。例如同一文件在 AG1、AG3、AG5 都被保留，只输出一行：
 
 ```text
-DB_EW27/AG1/event_001.eqr
-DB_EW27/AG3/event_001.eqr
-DB_EW27/AG5/event_001.eqr
+XZ_NAQ_2022219_214001.eqr
 ```
 
 多频 good 判断保留该事件实际参与联合判断的有效视图，不表示每个视图单独通过分类。
-单频模型只列出它使用的视图。不同模型建议用 `--output` 命名，不覆盖已有结果；
+单频模型只使用其要求的视图。同名文件在整个输出中只出现一次；完整来源路径保留在 CSV 明细中。
+`record.json` 的 `record_entries` 是名单行数，`retained_files` 是去重前保留的实际视图文件数。
+不同模型建议用 `--output` 命名，不覆盖已有结果；
 明确替换才使用 `--overwrite`。
 
 | 文件 | 内容 |

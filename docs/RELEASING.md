@@ -10,6 +10,11 @@ portable installation). Keep the immutable 53 model ZIP URLs at v0.1.3; upload
 the new wheel and source distribution without duplicating those archives. The
 eight Reference bundles remain included, with identical weights and hashes.
 
+v0.1.5 changes the plain `record` output to unique basenames, with full relative
+paths preserved in CSV sidecars. Summary schema 3 adds `record_entries` without
+changing the source-file meaning of `retained_files`. Weights and predictions
+are unchanged; the same software-only release procedure applies.
+
 ## Code and trained weights
 
 1. Run `python -m pytest -q` and `python scripts/reproduce_comparisons.py --output /tmp/rfqc-comparison-check`.

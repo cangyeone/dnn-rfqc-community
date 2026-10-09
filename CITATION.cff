@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "Please cite the benchmark manuscript and the original model studies listed in docs/METHODS.md."
 title: "DNN RFQC Community: single-filter and multi-filter receiver-function quality control"
-version: 0.1.4
+version: 0.1.5
 date-released: 2026-10-09
 authors:
   - family-names: Yu

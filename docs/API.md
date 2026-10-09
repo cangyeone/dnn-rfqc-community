@@ -94,7 +94,7 @@ pool timing. For repeated fresh-process rounds and full definitions, see
 [BENCHMARK_zh.md](BENCHMARK_zh.md). Timings generated on new hardware are new
 measurements and do not replace the published snapshot.
 
-## SAC EQR directory screening (v0.1.4)
+## SAC EQR directory screening (v0.1.5)
 
 ```python
 from rfqc_bench import screen_eqr
@@ -109,9 +109,12 @@ seed=None, model_dir=None, device='cpu', cache_dir=None, gaussian=None,
 batch_size=32, overwrite=False, max_files=None, threshold=None, filters=None,
 resample=False)` recursively reads binary SAC
 v6/v7 EQR files. The returned dictionary is also saved at `<output>.json`.
-Default output is `<directory>/record`, containing retained paths relative to the
-input directory, one per line. Prediction/provenance and rejection CSVs accompany
-it. No input file is rewritten. Identical event filenames in a station's AG
+Default output is `<directory>/record`, containing unique retained EQR basenames,
+one per line with no directory prefixes. Deduplication covers the entire call.
+Prediction/input CSVs preserve full source paths relative to the input directory.
+Summary schema 3 adds `record_entries` (unique names / record lines);
+`retained_files` still counts retained source files across filter views.
+No input file is rewritten. Identical event filenames in a station's AG
 directories identify filter views; multi-filter predictions allow missing views.
 Flat inputs require an explicit known `gaussian`. The observed input must cover
 P-referenced −10..40 s. `resample=True` enables polyphase rate conversion and

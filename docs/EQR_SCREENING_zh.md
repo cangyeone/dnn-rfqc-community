@@ -1,6 +1,6 @@
 # 给出 EQR 目录，自动筛选并生成 record
 
-本说明适用于社区版 v0.1.4（目录功能自原项目 v0.1.2 提供）。适合已经计算完成、以直达 P 波为零时刻的径向接收函数
+本说明适用于社区版 v0.1.5（目录功能自原项目 v0.1.2 提供）。适合已经计算完成、以直达 P 波为零时刻的径向接收函数
 （二进制 SAC `.eqr` 文件）。输入目录后自动读取波形、匹配不同滤波结果、调用
 现有模型，输出保留文件清单。**不移动、删除或改写任何原始 EQR 文件。**
 
@@ -9,14 +9,14 @@
 需要 Python 3.10 或以上，推荐虚拟环境：
 
 ```bash
-python -m pip install --upgrade "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.4"
+python -m pip install --upgrade "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.5"
 rfqc-bench screen-eqr "/path/to/all_eqr"
 ```
 
 不安装 HTTP 服务时，可以用不依赖 Git 的 wheel：
 
 ```bash
-python -m pip install --upgrade https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.1.4/rfqc_bench-0.1.4-py3-none-any.whl
+python -m pip install --upgrade https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.1.5/rfqc_bench-0.1.5-py3-none-any.whl
 ```
 
 运行结束后，输入目录内生成 `record`。默认使用现有
@@ -116,18 +116,23 @@ rfqc-bench screen-eqr "/path/to/flat_eqr" --gaussian 3
 
 ## 3. record 的格式
 
-`record` 是 UTF-8 文本，无表头，每行一个相对于输入目录的文件路径。例如：
+`record` 是 UTF-8 文本，无表头，每行一个去重后的 `.eqr` 文件名。
+去除 `AG*/`、台站和其他目录前缀；同名文件在整个名单中只写一次，例如：
 
 ```text
-DB_EW27/AG1/EW27_20161107_2131.eqr
-DB_EW27/AG3/EW27_20161107_2131.eqr
-DB_EW27/AG5/EW27_20161107_2131.eqr
+XZ_NAQ_2022219_214001.eqr
 ```
 
-多频模型输出的是**事件的联合判断**：预测 good 后，该事件实际参与判断的所有
-有效视图都写入 `record`；这不等于每个频率都独立通过一次分类。单频模型只输出
-它实际使用的那个频率文件。路径保留子目录，避免多个台站或频率中的同名文件混淆。
-输入为平铺目录时，每行自然就是 `.eqr` 文件名。
+多频模型输出的是**事件的联合判断**：预测 good 后，该事件的文件名写入 `record`；
+AG1、AG3、AG5 中的同名文件合并为一行。这不等于每个频率都独立通过一次分类。
+单频模型只使用其要求的视图，输出格式相同。跨子目录的同名文件也只写一次；
+需要定位实际文件时，查看 `record.predictions.csv` 中判断为 good 的 `files` 字段，
+这里保留参与判断的每个视图相对于输入目录的完整路径。
+
+`record.json` 使用 schema 3：`record_entries` 是去重后的名单行数，
+`retained_files` 仍统计保留的实际视图文件数。例如一个事件的三个视图被保留时，
+两项分别为 1 和 3。v0.1.4 及更早版本的带路径名单不会被自动转换；
+重新运行并用 `--output` 指定新名单，或明确使用 `--overwrite` 替换原有输出。
 
 同时生成：
 

@@ -10,7 +10,7 @@
 需要 Python 3.10 或以上。建议先创建虚拟环境；下面命令可直接通过 pip 安装发布的 wheel，不需要 Git：
 
 ```bash
-python -m pip install https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.1.4/rfqc_bench-0.1.4-py3-none-any.whl
+python -m pip install https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.1.5/rfqc_bench-0.1.5-py3-none-any.whl
 rfqc-bench doctor
 rfqc-bench demo --model gong_cnn
 ```
@@ -19,7 +19,7 @@ rfqc-bench demo --model gong_cnn
 要启用 HTTP API，可安装带 api 扩展的版本：
 
 ```bash
-python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.4"
+python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.5"
 rfqc-bench serve --model gong_cnn
 ```
 
@@ -32,7 +32,7 @@ rfqc-bench serve --model gong_cnn
 rfqc-bench screen-eqr "/path/to/all_eqr"
 ```
 
-默认生成该目录内的 `record`，每行一个保留下来的 `.eqr` 相对路径。自动匹配
+默认生成该目录内的 `record`，每行一个去重后的 `.eqr` 文件名，不含目录前缀。自动匹配
 台站内 AG 目录下的同名事件；原始文件不改动。平铺目录需要指定已知系数，如
 `--gaussian 3`。支持 Python 与 HTTP：[完整说明](EQR_SCREENING_zh.md)。
 

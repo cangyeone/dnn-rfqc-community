@@ -131,11 +131,13 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
                seed=None, model_dir=None, device='cpu', cache_dir=None, gaussian=None,
                batch_size=32, overwrite=False, max_files=None, threshold=None,
                filters=None, resample=False):
-    """Write a UTF-8 ``record`` list of retained relative EQR paths.
+    """Write a UTF-8 ``record`` list of unique retained EQR basenames.
 
     AG folders identify filter views; identical basenames within one station
     anchor identify an event. Missing views are allowed for multi-filter models.
-    A single-filter model lists only its required view. Folder names such as
+    Directory prefixes are removed and names are deduplicated across the whole
+    call; prediction/input CSVs retain the complete relative source paths.
+    A single-filter model uses only its required view. Folder names such as
     ``bad`` are never treated as labels. Invalid/unused files are recorded in a
     sidecar, not silently accepted. Original files are never moved or rewritten.
 
@@ -243,7 +245,8 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
 
     target.parent.mkdir(parents=True, exist_ok=True)
     totals = dict(files_found=count, events_screened=0, good_events=0, bad_events=0,
-                  retained_files=0, stations_screened=0, files_resampled=0)
+                  retained_files=0, record_entries=0, stations_screened=0, files_resampled=0)
+    recorded_names = set()
     input_fields = ['path','gaussian','source_samples','source_delta_s','source_rate_hz',
                     'source_begin_s','source_end_s','resampled','resampling_up','resampling_down',
                     'resampling_method','sha256']
@@ -325,14 +328,18 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
                     totals['good_events' if decision else 'bad_events'] += 1
                     if decision:
                         for path in paths:
-                            records.write(path+'\n')
+                            name = Path(path).name
+                            if name not in recorded_names:
+                                records.write(name+'\n')
+                                recorded_names.add(name)
+                                totals['record_entries'] += 1
                         totals['retained_files'] += len(paths)
         with staging['rejected'].open('w', encoding='utf-8', newline='') as stream:
             writer = csv.writer(stream)
             writer.writerow(['path','reason'])
             writer.writerows(rejected)
         bundle = getattr(predictor, 'bundle', {})
-        summary = dict(schema=2, status='complete' if totals['events_screened'] else 'no_valid_events',
+        summary = dict(schema=3, status='complete' if totals['events_screened'] else 'no_valid_events',
                        started_utc=started, completed_utc=datetime.now(timezone.utc).isoformat(),
                        directory=str(root), outputs={key:str(path) for key,path in destinations.items()},
                        model=predictor.spec.name, seed=predictor.seed, threshold=effective_threshold,
@@ -344,9 +351,9 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
                        **totals, rejected_or_unused_entries=len(rejected),
                        source_manifest_sha256=source_hash.hexdigest(),
                        output_sha256={key:digest(staging[key]) for key in ['record','predictions','rejected','inputs']},
-                       record_format='UTF-8; one retained EQR path per line, relative to directory; no header',
+                       record_format='UTF-8; one unique retained EQR basename per line; no directory prefixes; no header',
                        input_contract='P-referenced radial RF; observed coverage -10..40 s; model grid 0.1 s; Gaussian coefficients are not Hz',
-                       selection='Joint event decision lists only the valid views used by this model; folder names are not labels')
+                       selection='Joint event decision uses valid views only; record deduplicates retained basenames; source paths remain in CSVs; folder names are not labels')
         staging['summary'].write_text(json.dumps(summary, indent=2, ensure_ascii=False, allow_nan=False)+'\n', encoding='utf-8')
         # mkdir is exclusive on Windows/POSIX, including filesystems without
         # hard links (e.g. external exFAT disks). Recheck all targets while

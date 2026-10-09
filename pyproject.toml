@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rfqc-bench"
-version = "0.1.4"
+version = "0.1.5"
 description = "DNN RFQC Community: single-filter and multi-filter RF screening with bundled trained models"
 readme = "README.md"
 requires-python = ">=3.10"

@@ -107,7 +107,8 @@ def test_grouping_missing_view_and_no_folder_label_leakage(tmp_path):
     before={p:p.read_bytes() for p in root.rglob('*.eqr')}
     predictor=Dummy()
     report=screen_eqr(root,predictor=predictor)
-    assert (root/'record').read_text().splitlines()==['A/AG1/bad/same.eqr','A/AG3/same.eqr']
+    assert (root/'record').read_text().splitlines()==['same.eqr']
+    assert report['record_entries']==1
     assert report['events_screened']==3 and report['good_events']==1 and report['retained_files']==2
     assert [len(d) for d in predictor.calls]==[2,1]
     assert sorted(predictor.calls[0].lengths)==[1,2]
@@ -119,11 +120,30 @@ def test_grouping_missing_view_and_no_folder_label_leakage(tmp_path):
     screen_eqr(root,predictor=predictor,overwrite=True)
 
 
+def test_record_deduplicates_basenames_globally_and_preserves_source_paths(tmp_path):
+    root=tmp_path/'input'
+    name='XZ_NAQ_2022219_214001.eqr'
+    retained=[f'A/AG1/bad/{name}',f'A/AG3/{name}',f'A/AG5/{name}',f'B/AG3/{name}']
+    for path in retained:
+        sac(root/path,station=path[0])
+    sac(root/'A/AG3/rejected.eqr',value=-1,station='A')
+    report=screen_eqr(root,predictor=Dummy())
+    assert (root/'record').read_text()==name+'\n'
+    assert report['record_entries']==1 and report['retained_files']==4
+    assert report['good_events']==2 and report['bad_events']==1
+    rows=list(csv.DictReader((root/'record.predictions.csv').open()))
+    paths=[path for row in rows if row['prediction']=='1' for path in json.loads(row['files'])]
+    assert sorted(paths)==retained
+    assert all(set(json.loads(row['files']))==set(json.loads(row['source_sha256'])) for row in rows)
+    screen_eqr(root,predictor=Dummy(),overwrite=True)
+    assert (root/'record').read_text()==name+'\n'
+
+
 def test_single_filter_and_root_itself_ag(tmp_path):
     root=tmp_path/'STA'
     sac(root/'AG1/event.eqr');sac(root/'AG3/event.eqr')
     report=screen_eqr(root,predictor=Dummy('reference_ag3'))
-    assert (root/'record').read_text()=='AG3/event.eqr\n'
+    assert (root/'record').read_text()=='event.eqr\n'
     assert report['rejected_or_unused_entries']==1
     report=screen_eqr(root/'AG3',predictor=Dummy())
     assert (root/'AG3/record').read_text()=='event.eqr\n'
@@ -269,7 +289,8 @@ def test_select_views_and_audit_mixed_sampling_rates(tmp_path):
     result=screen_eqr(root,predictor=predictor,filters=[1,5],resample=True)
     assert result['files_resampled']==2 and result['retained_files']==2
     assert predictor.calls[0].gaussians.tolist()==[[1,5]]
-    assert (root/'record').read_text().splitlines()==['STA/AG1/event.eqr','STA/AG5/event.eqr']
+    assert (root/'record').read_text().splitlines()==['event.eqr']
+    assert result['record_entries']==1
     inputs=list(csv.DictReader((root/'record.inputs.csv').open()))
     assert len(inputs)==2 and all(r['resampled']=='True' for r in inputs)
     assert all(r['source_delta_s'] for r in inputs)
@@ -317,5 +338,6 @@ def test_portable_launcher_from_another_users_directory(tmp_path):
                            text=True,capture_output=True,check=True,timeout=60)
     report=json.loads(result.stdout)
     assert report['retained_files']==2 and report['files_resampled']==2
-    assert output.read_text().splitlines()==['ST/AG1/event.eqr','ST/AG5/event.eqr']
+    assert output.read_text().splitlines()==['event.eqr']
+    assert report['record_entries']==1
     assert not (home/'model_cache').exists(), 'Bundled model should require no shared writable cache'
