@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "method": "reference_ag3",
+  "seed": 20260928,
+  "threshold": 0.86,
+  "software_version": "0.1.0",
+  "license": "GPL-3.0-only",
+  "source_repository": "https://github.com/cangyeone/rfqc-bench",
+  "preprocessing": {
+    "feature_mean": [
+      0.6278169248483835,
+      1.5279118258445075,
+      0.368716149114138,
+      0.5111085426098704,
+      1.5290034839259876,
+      0.8981982482769639
+    ],
+    "feature_std": [
+      1.7489537698707904,
+      1.445345135203667,
+      1.5572425229715583,
+      1.058008660719297,
+      2.961208237637618,
+      0.36889698193836706
+    ],
+    "wave_scale": 0.5763668119907379,
+    "preprocessing_version": 2,
+    "fit_split": "train"
+  },
+  "parameters": null,
+  "training": {
+    "training_seed": 20260928,
+    "phase_task_transfer": false,
+    "source": "Registered RFQC benchmark adaptation",
+    "selection": "Fixed first seed by default; all available registered seeds are exposed, not selected by test score."
+  },
+  "input_grid": {
+    "samples": 501,
+    "start_time": -10.0,
+    "sampling_interval": 0.1
+  },
+  "labels": {
+    "bad": 0,
+    "good": 1
+  },
+  "weights_sha256": "033173b35a290e396070511c03ba6cadfc26ac86a342750b01c2dc6de25b492f"
+}

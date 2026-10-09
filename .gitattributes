@@ -1,0 +1,4 @@
+# Keep checksum-verified data products and model metadata byte-identical on Windows.
+benchmarks/** -text
+src/rfqc_bench/pretrained/** -text
+*.csv whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

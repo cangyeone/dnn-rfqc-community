@@ -1,0 +1,38 @@
+{
+  "version": "0.1.3",
+  "package_loaded_from_installed_wheel": true,
+  "python": "3.14.4",
+  "torch": "2.11.0",
+  "models": [
+    {
+      "model": "reference_ag3",
+      "seed": 20260928,
+      "download_disabled": true,
+      "records": 3,
+      "directory_and_http_record_equal": true,
+      "array_and_http_prediction_equal": true,
+      "bundled_weights_sha256": "033173b35a290e396070511c03ba6cadfc26ac86a342750b01c2dc6de25b492f"
+    },
+    {
+      "model": "reference_multifilter",
+      "seed": 20260928,
+      "download_disabled": true,
+      "records": 3,
+      "directory_and_http_record_equal": true,
+      "array_and_http_prediction_equal": true,
+      "bundled_weights_sha256": "bc62713fe2f251537bb5372ff82f8874bed907a806de6e0bdf93228cef13e08d"
+    }
+  ],
+  "inputs": "Runtime-generated synthetic SAC, not observational data",
+  "scope": "Installation and offline inference check, not accuracy evaluation",
+  "tests_passed": 64,
+  "registered_configurations": 19,
+  "registered_model_bundles": 53,
+  "bundled_reference_models": 8,
+  "all_model_archives_and_member_sha256_verified": true,
+  "original_comparison_snapshot_files_verified": 92,
+  "wheel_and_sdist_include_8_real_models": true,
+  "original_source_commit": "d44b0166b7b25e48c02c736e5803db9946e54a46",
+  "model_source": "Byte-identical original RFQC Bench v0.1.0 RF-trained archives",
+  "new_paused_db_yp_weights_included": false
+}

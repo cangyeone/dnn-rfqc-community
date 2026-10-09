@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rfqc-bench"
+version = "0.1.3"
+description = "DNN RFQC Community: single-filter and multi-filter RF screening with bundled trained models"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-only"
+license-files = ["LICENSE", "third_party/*LICENSE", "THIRD_PARTY_NOTICES.md"]
+authors = [{name = "Ziye Yu"}]
+dependencies = ["numpy>=1.24,<3", "scipy>=1.10,<2", "scikit-learn>=1.3,<2", "torch>=2.8,<3", "safetensors>=0.4,<1", "threadpoolctl>=3.1,<4"]
+classifiers = ["Programming Language :: Python :: 3", "Topic :: Scientific/Engineering :: Physics", "Operating System :: OS Independent"]
+
+[project.optional-dependencies]
+plots = ["matplotlib>=3.7,<4"]
+api = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1"]
+dev = ["pytest>=8", "httpx>=0.27", "build>=1.2", "twine>=6", "fastapi>=0.115,<1", "uvicorn>=0.30,<1"]
+
+[project.scripts]
+rfqc-bench = "rfqc_bench.cli:main"
+dnn-rfqc = "rfqc_bench.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/cangyeone/dnn-rfqc-community"
+Documentation = "https://github.com/cangyeone/dnn-rfqc-community/tree/main/docs"
+Issues = "https://github.com/cangyeone/dnn-rfqc-community/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+rfqc_bench = ["model_zoo.json", "pretrained/*/*/bundle.json", "pretrained/*/*/weights.safetensors"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
