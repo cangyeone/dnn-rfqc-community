@@ -32,6 +32,9 @@ bash install.sh
 bash screen_eqr.sh "/path/to/all_eqr" --threshold 0.7 --resample
 ```
 
+通过 `install.sh` 安装后，`bash screen_eqr.sh` 无需激活环境；若要直接运行
+`rfqc-bench` 或 `python screen_eqr.py`，先执行 `source .venv/bin/activate`。
+
 HTTP 服务需要额外依赖，在仓库目录运行 `python -m pip install -e ".[api]"`，
 或直接安装指定版本：
 

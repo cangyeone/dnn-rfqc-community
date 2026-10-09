@@ -50,6 +50,8 @@ bash screen_eqr.sh "/path/to/eqr" --threshold 0.7 --resample --output "$PWD/resu
 模型缓存默认在各用户自己的 `~/.cache/rfqc-bench`，可用 `--cache-dir` 指定。
 输入只读时用 `--output` 指向自己可写的位置。脚本没有固定用户名或开发者路径。
 虚拟环境不要跨电脑复制；移动源码后在新位置重新运行安装。
+通过该脚本安装后，直接执行 `bash screen_eqr.sh` 即可；使用 `rfqc-bench` 命令或
+Python API 前先执行 `source .venv/bin/activate`，或显式使用 `.venv/bin/python`。
 
 纯 CPU 安装可执行 `RFQC_TORCH_INDEX=https://download.pytorch.org/whl/cpu bash install.sh`。
 CUDA 用户应按 GPU/驱动选择 PyTorch 轮子源，或先在自己的环境安装合适的 PyTorch
