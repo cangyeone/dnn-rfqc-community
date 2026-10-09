@@ -3,6 +3,8 @@
 接收函数自动质量筛选：给出 `.eqr` 文件目录，生成保留文件名单 `record`。
 提供 **单频与多频模型、实际训练权重、命令行、Python API 和 HTTP API**。
 
+v0.1.4 支持自定义阈值、选择滤波视图，以及将不同采样率的 SAC 重采样到模型网格。
+
 **8 份 Reference 权重直接随源码和 pip 安装包提供**，无需再下载模型；全部
 **19 个配置、53 份已训练模型包**同时放在[本仓库 Releases](https://github.com/cangyeone/dnn-rfqc-community/releases/tag/v0.1.3)。
 不包含观测波形、人工标签或逐条实验预测。
@@ -17,7 +19,7 @@
 需要 Python 3.10 或以上，推荐单独的虚拟环境。可直接通过 pip 安装 wheel，无需 Git：
 
 ```bash
-python -m pip install https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.1.3/rfqc_bench-0.1.3-py3-none-any.whl
+python -m pip install https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.1.4/rfqc_bench-0.1.4-py3-none-any.whl
 rfqc-bench doctor
 ```
 
@@ -26,14 +28,15 @@ rfqc-bench doctor
 ```bash
 git clone https://github.com/cangyeone/dnn-rfqc-community.git
 cd dnn-rfqc-community
-python -m pip install -e .
+bash install.sh
+bash screen_eqr.sh "/path/to/all_eqr" --threshold 0.7 --resample
 ```
 
 HTTP 服务需要额外依赖，在仓库目录运行 `python -m pip install -e ".[api]"`，
 或直接安装指定版本：
 
 ```bash
-python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.3"
+python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.4"
 ```
 
 为兼容原接口，**pip 包名仍为 `rfqc-bench`，Python 导入名为 `rfqc_bench`**。
@@ -57,6 +60,18 @@ rfqc-bench screen-eqr "/path/to/all_eqr" --device cuda:0 --batch-size 32 --outpu
 Windows 示例：`rfqc-bench screen-eqr "D:\my_eqr"`；WSL 对应路径为 `/mnt/d/my_eqr`。
 源码安装后也可运行 `python screen_eqr.py "/path/to/all_eqr"`，参数与 `screen-eqr` 一致。
 
+```bash
+# 自定义阈值，按各 SAC 头段识别采样率并转换到模型网格
+rfqc-bench screen-eqr "/path/to/all_eqr" --threshold 0.7 --resample --output "results/record_t07"
+# 仅使用 AG1、AG3、AG5 的可用视图进行联合判断
+rfqc-bench screen-eqr "/path/to/all_eqr" --filters 1 3 5 --resample --output "results/record_135"
+```
+
+保留规则为 `p_good >= threshold`；省略阈值时使用模型的验证集阈值。
+`--filters` 是高斯滤波系数，`--resample` 处理时间采样率，两者不同。
+`install.sh` 只创建当前目录的 `.venv`，没有固定用户名，无需 sudo。其他用户在自己的
+电脑安装依赖即可，不需要开发者的 Python 环境；Windows 使用上述 pip 命令。
+
 ## 3. 数据怎么放
 
 保留台站和 AG 目录，同一台站中跨滤波视图的同一事件使用**完全相同的文件名**：
@@ -77,8 +92,8 @@ all_eqr/
 - AG1、AG1.5、AG2、AG2.5、AG3、AG4、AG5 是 Gaussian 系数，**不是 Hz**。
 - `good/`、`bad/` 子目录不作为预测依据。原始文件不移动、不删除、不改写。
 - 输入应为已计算的径向 RF，二进制 SAC `.eqr`，直达 P 波位于 `t=0`，采样间隔
-  0.1 s，实际覆盖 −10 到 40 s；601 点、−15 到 45 s 文件自动截取对应的 501 点。
-- 不自动插值、补零、重新滤波或从原始地震记录计算 RF。压缩包应先解压；
+  默认要求 0.1 s，实际覆盖 −10 到 40 s；加 `--resample` 可转换其他采样率并对齐时间网格。
+- 不能补造缺失时间窗，不会改变高斯系数或从原始地震记录计算 RF。压缩包应先解压；
   本目录接口不解析仅含数字波形的 `good_xxx` 导出文本。
 
 平铺目录没有 AG 标识时必须明确实际滤波系数：
@@ -109,6 +124,7 @@ DB_EW27/AG5/event_001.eqr
 | `record` | 保留 `.eqr` 文件名单 |
 | `record.predictions.csv` | 事件分数、判断、阈值、模型、种子、来源路径和 SHA256 |
 | `record.rejected.csv` | 无法处理或未使用文件及其原因 |
+| `record.inputs.csv` | 原始采样率、时间范围、重采样方式与源文件哈希 |
 | `record.json` | 数量统计、模型标识、输出位置与文件哈希 |
 
 全部有效事件预测 bad 时名单为空；若没有有效输入，报告 `no_valid_events`，退出码为 2。
@@ -141,14 +157,16 @@ rfqc-bench screen-eqr "/path/to/all_eqr" --model-dir "/path/to/local_bundle" --o
 
 目录接口支持纯波形模型。描述量/combined/LogReg 仍需在数组 API 中提供六项描述量，
 不能从 SAC 头段编造。Xiong-FCM 必须提供同台站完整候选集合，程序按站计算。
-预处理参数和验证集阈值均随模型加载，不在新输入上重新拟合。
+预处理参数和验证集阈值均随模型加载，不在新输入上重新拟合。目录接口可为单次调用
+显式覆盖阈值，同时记录原阈值和本次阈值，不修改模型文件。
 
 ## 6. Python 调用
 
 ```python
 from rfqc_bench import RFQCPredictor, screen_eqr
 
-report = screen_eqr("/path/to/all_eqr", output="results/record_multi")
+report = screen_eqr("/path/to/all_eqr", output="results/record_multi",
+                    threshold=0.7, filters=[1, 3, 5], resample=True)
 print(report["good_events"], report["retained_files"])
 
 single = RFQCPredictor.from_pretrained("reference_ag3", device="cpu")
@@ -166,7 +184,7 @@ multi.screen_eqr("/path/to/another_station", output="results/record_multi_2")
 rfqc-bench serve --model reference_multifilter --eqr-root "/srv/rfqc" --host 127.0.0.1 --port 8000
 curl -X POST http://127.0.0.1:8000/screen-eqr \
   -H "Content-Type: application/json" \
-  -d '{"directory":"incoming/all_eqr", "output":"results/record_multi"}'
+  -d '{"directory":"incoming/all_eqr", "output":"results/record_multi", "threshold":0.7, "resample":true, "filters":[1,3,5]}'
 ```
 
 路径相对于服务器 `/srv/rfqc`，文件应先放在服务器；不是客户端电脑的路径。
@@ -191,7 +209,7 @@ python scripts/verify_community_models.py
 
 社区版本基于 RFQC Bench `d44b016`，本次所有权重与原公开 v0.1.0 参数逐字节一致。
 它们是本项目在 RF 数据上训练的文献方法改编版，不是各论文作者的原始预训练模型，
-不包含相位拾取迁移权重。因数据问题暂停的新 DB/YP 训练权重**没有混入**本次发布。
+不包含相位拾取迁移权重。修正数据后的新 DB/YP 重训单独进行，尚未核验的权重**没有混入**本次发布。
 good 分数不是校准后的物理可用性概率，新地区的适用性仍需独立评价。
 
 软件与模型按 GPL-3.0-only 发行，来源与第三方声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)

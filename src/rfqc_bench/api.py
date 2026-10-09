@@ -33,6 +33,9 @@ class ScreenEQRRequest(BaseModel):
     directory: str = Field(description='Directory relative to the configured server eqr_root')
     output: str | None = Field(default=None,description='Record path relative to eqr_root; default: directory/record')
     gaussian: float | None = None
+    threshold: float | None = Field(default=None,ge=0,le=1,description='Per-request score cutoff; does not mutate the model')
+    filters: list[float] | None = None
+    resample: bool = False
 
 
 def create_app(predictor,max_records=4096,batch_size=32,*,eqr_root=None,max_eqr_files=100000):
@@ -85,7 +88,8 @@ def create_app(predictor,max_records=4096,batch_size=32,*,eqr_root=None,max_eqr_
             output=confined(request.output) if request.output is not None else directory/'record'
             with lock:
                 return predictor.screen_eqr(directory,output,gaussian=request.gaussian,
-                                            batch_size=batch_size,max_files=max_eqr_files)
+                                            batch_size=batch_size,max_files=max_eqr_files,
+                                            threshold=request.threshold,filters=request.filters,resample=request.resample)
         except FileExistsError as exc:raise HTTPException(status_code=409,detail=str(exc)) from exc
         except (ValueError,OSError) as exc:raise HTTPException(status_code=422,detail=str(exc)) from exc
     return app

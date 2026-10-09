@@ -3,7 +3,7 @@
 Install the `api` extra and start one model per process:
 
 ```bash
-python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.3"
+python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.4"
 rfqc-bench serve --model gong_cnn --seed 20260928 --device cpu --host 127.0.0.1 --port 8000
 ```
 
@@ -64,11 +64,16 @@ multiple workers independently allocate weights and can multiply GPU memory.
 rfqc-bench serve --eqr-root /srv/rfqc --host 127.0.0.1 --port 8000
 curl -X POST http://127.0.0.1:8000/screen-eqr \
   -H 'Content-Type: application/json' \
-  -d '{"directory":"incoming/all_eqr","output":"results/record"}'
+  -d '{"directory":"incoming/all_eqr","output":"results/record","threshold":0.7,"filters":[1,3,5],"resample":true}'
 ```
 
 `directory` and optional `output` are relative to the configured **server-side**
 root, not the client's filesystem. Flat inputs can specify `"gaussian":3`.
+`threshold` is a per-request cutoff in [0,1] that never mutates the shared model.
+`filters` selects Gaussian views; `resample` converts sampling rates to the fixed
+10 Hz model grid. Source SAC files stay unchanged. Per-file conversions are
+recorded in the inputs CSV. These options belong to `/screen-eqr`; the existing
+`/predict` array-grid contract is unchanged.
 Files must already exist on the server; there is no upload endpoint. The response
 is a JSON summary including paths to the plain record, prediction/rejection CSVs,
 counts, model identity and hashes. The endpoint returns 403 unless `--eqr-root`

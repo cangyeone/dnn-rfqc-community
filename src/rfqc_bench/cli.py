@@ -37,6 +37,9 @@ def main(argv=None):
             c.add_argument('directory',type=Path,help='Recursively scan SAC .eqr files')
             c.add_argument('--output',type=Path,help='Plain record file; defaults to DIRECTORY/record')
             c.add_argument('--gaussian',type=float,help='Known Gaussian coefficient for flat inputs without AG folders (not Hz)')
+            c.add_argument('--threshold',type=float,help='Retain p_good >= this cutoff in [0,1]; default: model validation threshold')
+            c.add_argument('--filters',type=float,nargs='+',help='Use only these Gaussian filter views, e.g. --filters 1 3 5 (not Hz)')
+            c.add_argument('--resample',action='store_true',help='Convert observed SAC sampling rates to 10 Hz and align the P-referenced model grid')
             c.add_argument('--overwrite',action='store_true',help='Replace existing record and its sidecars')
         elif cmd=='benchmark':
             c.add_argument('--input',type=Path,required=True);c.add_argument('--output',type=Path,required=True)
@@ -88,7 +91,8 @@ def main(argv=None):
                                    max_eqr_files=a.max_eqr_files),host=a.host,port=a.port);return
         if a.command=='screen-eqr':
             report=predictor.screen_eqr(a.directory,a.output,gaussian=a.gaussian,
-                                        batch_size=a.batch_size,overwrite=a.overwrite)
+                                        batch_size=a.batch_size,overwrite=a.overwrite,
+                                        threshold=a.threshold,filters=a.filters,resample=a.resample)
             print(json.dumps(report,indent=2,ensure_ascii=False))
             if report['status']=='no_valid_events':p.exit(2,'No valid events; see the rejected file for reasons.\n')
             return

@@ -1,5 +1,10 @@
 import csv
 import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
 
 from fastapi.testclient import TestClient
 import numpy as np
@@ -16,7 +21,7 @@ from rfqc_bench.training import save_bundle
 
 
 def sac(path, *, value=1., endian='<', version=6, dt=.1, begin=-15., n=601,
-        station='EW27', baz=40., nan=False, uneven=False):
+        station='EW27', baz=40., nan=False, uneven=False, signal=None):
     """Synthetic binary SAC fixture; no observational data in the test suite."""
     path.parent.mkdir(parents=True, exist_ok=True)
     f = np.full(70, -12345., dtype=endian+'f4')
@@ -28,6 +33,7 @@ def sac(path, *, value=1., endian='<', version=6, dt=.1, begin=-15., n=601,
     chars[160:168] = b'EQR     '
     chars[168:176] = b'DB      '
     wave = np.full(n,value,dtype=endian+'f4')
+    if signal is not None:wave=np.asarray(signal(begin+np.arange(n)*dt),dtype=endian+'f4')
     if nan:wave[100] = np.nan
     footer = np.full(22, -12345., dtype=endian+'f8')
     footer[:3] = [dt,begin,begin+(n-1)*dt]
@@ -207,3 +213,109 @@ def test_actual_model_python_and_cli(tmp_path,capsys):
     assert json.loads(capsys.readouterr().out)['events_screened']==1
     assert (tmp_path/'cli-record').read_bytes()==(root/'record').read_bytes()
     assert result['model_weights_sha256']==predictor.bundle['weights_sha256']
+
+
+def test_call_threshold_does_not_mutate_model_or_scores(tmp_path):
+    root=tmp_path/'input';sac(root/'AG3/a.eqr');sac(root/'AG3/b.eqr',value=-1)
+    model=Dummy()
+    for threshold,expected in [(0,2),(.1,2),(.9,1),(.95,0),(1,0),(None,1)]:
+        result=screen_eqr(root,tmp_path/f'record_{threshold}',predictor=model,threshold=threshold)
+        assert result['good_events']==expected and model.threshold==.6
+        assert result['threshold_source']==('model' if threshold is None else 'user')
+        rows=list(csv.DictReader(open(result['outputs']['predictions'])))
+        assert [float(r['p_good']) for r in rows]==[.9,.1]
+        assert all(float(r['threshold'])==result['threshold'] for r in rows)
+    for bad in [-.01,1.01,float('nan'),float('inf'),True]:
+        with pytest.raises(ValueError,match='threshold'):
+            screen_eqr(root,tmp_path/'bad',predictor=model,threshold=bad)
+
+
+@pytest.mark.parametrize('dt,begin,n',[(.02,-15,3001),(.05,-15,1201),(.2,-15,301),(.025,-15.025,2403),(.1,-15.03,602),(.03,-10.01,1668)])
+@pytest.mark.parametrize('version,endian',[(6,'<'),(7,'>')])
+def test_resampling_preserves_low_frequency_time_and_amplitude(tmp_path,dt,begin,n,version,endian):
+    signal=lambda t: np.exp(-((t-4.)/.7)**2)+.2*np.sin(2*np.pi*.2*t)
+    path=sac(tmp_path/'signal.eqr',dt=dt,begin=begin,n=n,signal=signal,version=version,endian=endian)
+    before=path.read_bytes();wave,metadata=read_eqr(path,resample=True)
+    truth=signal(np.arange(501)*.1-10.)
+    assert wave.shape==(501,) and metadata['resampled']
+    # Include P/Ps timing, not merely a copy of the implementation's algorithm.
+    assert np.max(np.abs(wave[20:-20]-truth[20:-20]))<.02
+    assert abs(np.argmax(wave)-np.argmax(truth))<=1
+    assert path.read_bytes()==before
+
+
+def test_downsampling_rejects_alias_energy_and_preserves_exact_grid(tmp_path):
+    path=sac(tmp_path/'alias.eqr',dt=.02,n=3001,
+             signal=lambda t: np.sin(2*np.pi*t)+np.sin(2*np.pi*8*t))
+    wave,metadata=read_eqr(path,resample=True)
+    truth=np.sin(2*np.pi*(np.arange(501)*.1-10.))
+    assert np.sqrt(np.mean((wave[20:-20]-truth[20:-20])**2))<.01
+    path=sac(tmp_path/'aligned.eqr',signal=lambda t:np.cos(t))
+    np.testing.assert_array_equal(read_eqr(path)[0],read_eqr(path,resample=True)[0])
+    assert not read_eqr(path,resample=True)[1]['resampled']
+
+
+@pytest.mark.parametrize('options',[{'dt':0},{'dt':-.1},{'dt':.05,'n':501},{'dt':.2,'begin':-9}])
+def test_resampling_does_not_fabricate_time_coverage(tmp_path,options):
+    with pytest.raises(ValueError):read_eqr(sac(tmp_path/'invalid.eqr',**options),resample=True)
+
+
+def test_select_views_and_audit_mixed_sampling_rates(tmp_path):
+    root=tmp_path/'mixed'
+    sac(root/'STA/AG1/event.eqr',dt=.05,n=1201)
+    sac(root/'STA/AG3/event.eqr')
+    sac(root/'STA/AG5/event.eqr',dt=.2,n=301)
+    predictor=Dummy()
+    result=screen_eqr(root,predictor=predictor,filters=[1,5],resample=True)
+    assert result['files_resampled']==2 and result['retained_files']==2
+    assert predictor.calls[0].gaussians.tolist()==[[1,5]]
+    assert (root/'record').read_text().splitlines()==['STA/AG1/event.eqr','STA/AG5/event.eqr']
+    inputs=list(csv.DictReader((root/'record.inputs.csv').open()))
+    assert len(inputs)==2 and all(r['resampled']=='True' for r in inputs)
+    assert all(r['source_delta_s'] for r in inputs)
+    with pytest.raises(ValueError,match='requires AG3'):
+        screen_eqr(root,tmp_path/'wrong',predictor=Dummy('reference_ag3'),filters=[1,5])
+    for filters in [[],[8],[float('nan')]]:
+        with pytest.raises(ValueError,match='filters'):
+            screen_eqr(root,tmp_path/'bad_filter',predictor=predictor,filters=filters)
+
+
+def test_http_threshold_isolation_resample_and_filter_selection(tmp_path):
+    root=tmp_path/'root';sac(root/'input/AG1/a.eqr',dt=.05,n=1201);sac(root/'input/AG3/a.eqr')
+    predictor=Dummy();client=TestClient(create_app(predictor,eqr_root=root))
+    request=dict(directory='input',output='strict',threshold=.95,resample=True,filters=[1])
+    r=client.post('/screen-eqr',json=request)
+    assert r.status_code==200 and r.json()['good_events']==0 and r.json()['files_resampled']==1
+    r=client.post('/screen-eqr',json={'directory':'input','output':'default'})
+    assert r.status_code==200 and r.json()['good_events']==1 and r.json()['threshold']==.6
+    assert predictor.threshold==.6
+    assert client.post('/screen-eqr',json={**request,'threshold':1.1}).status_code==422
+
+
+def test_cli_passes_threshold_resample_filters(tmp_path,capsys,monkeypatch):
+    root=tmp_path/'input';sac(root/'AG1/event.eqr',dt=.05,n=1201)
+    monkeypatch.setattr('rfqc_bench.cli._predictor',lambda a:Dummy())
+    main(['screen-eqr',str(root),'--threshold','.95','--resample','--filters','1'])
+    report=json.loads(capsys.readouterr().out)
+    assert report['good_events']==0 and report['files_resampled']==1
+    assert report['threshold']==.95 and report['requested_filters']==[1]
+
+
+@pytest.mark.skipif(shutil.which('bash') is None,reason='Bash launcher is for Linux/macOS/WSL; Windows uses the CLI')
+def test_portable_launcher_from_another_users_directory(tmp_path):
+    project=Path(__file__).resolve().parents[1]
+    home=tmp_path/'other user 中文';home.mkdir()
+    launcher=home/'screen_eqr.sh';shutil.copy2(project/'screen_eqr.sh',launcher)
+    source=home/'input with spaces'
+    sac(source/'ST/AG1/event.eqr',dt=.05,n=1201)
+    sac(source/'ST/AG5/event.eqr',dt=.2,n=301)
+    output=home/'my results'/'record'
+    env=dict(os.environ,RFQC_PYTHON=sys.executable,PYTHONPATH=str(project/'src'),HOME=str(home),
+             RFQC_CACHE=str(home/'model_cache'))
+    result=subprocess.run(['bash',str(launcher),str(source),'--threshold','0','--resample',
+                           '--filters','1','5','--output',str(output)],env=env,cwd=tmp_path,
+                           text=True,capture_output=True,check=True,timeout=60)
+    report=json.loads(result.stdout)
+    assert report['retained_files']==2 and report['files_resampled']==2
+    assert output.read_text().splitlines()==['ST/AG1/event.eqr','ST/AG5/event.eqr']
+    assert not (home/'model_cache').exists(), 'Bundled model should require no shared writable cache'

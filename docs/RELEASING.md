@@ -5,6 +5,11 @@ The distribution name remains `rfqc-bench`; the repository is
 `d44b0166b7b25e48c02c736e5803db9946e54a46`. Historical validation files describe
 their original releases and are preserved as provenance, not new experiments.
 
+v0.1.4 is a software-only update (thresholds, view selection, resampling and
+portable installation). Keep the immutable 53 model ZIP URLs at v0.1.3; upload
+the new wheel and source distribution without duplicating those archives. The
+eight Reference bundles remain included, with identical weights and hashes.
+
 ## Code and trained weights
 
 1. Run `python -m pytest -q` and `python scripts/reproduce_comparisons.py --output /tmp/rfqc-comparison-check`.
@@ -25,8 +30,8 @@ their original releases and are preserved as provenance, not new experiments.
    claim PyPI availability until an actual PyPI upload and installation succeed.
 
 The current archives are byte-identical mirrors of the original v0.1.0 RF-trained
-weights, not newly exported source-author models. New DB/YP training was paused
-pending data review and contributes no weights to this release. Do not substitute
+weights, not newly exported source-author models. Corrected DB/YP training is
+running separately and contributes no weights to this release. Do not substitute
 those unfinished or unverified experiments. Future weight changes need a new
 version, new catalog hashes and a complete validation record.
 

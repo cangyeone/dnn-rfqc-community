@@ -1,6 +1,7 @@
 """Screen user-owned SAC EQR directories without changing the source files."""
 from collections import defaultdict
 from datetime import datetime, timezone
+from fractions import Fraction
 import csv
 import hashlib
 import json
@@ -15,11 +16,13 @@ from .data import GAUSSIANS, RFData
 from .io import digest
 
 
-def read_eqr(path):
-    """Read a regular, binary SAC v6/v7 RF; crop observed [-10, 40] s at 0.1 s.
+def read_eqr(path, *, resample=False):
+    """Read a binary SAC RF onto the model's [-10, 40] s, 0.1 s grid.
 
-    Time zero must already be the direct P arrival. No resampling, padding,
-    deconvolution, moveout correction or amplitude scaling is performed here.
+    Time zero must already be the direct P arrival. With resample=True, use
+    polyphase FIR rate conversion and linear time-grid alignment. The observed
+    source must cover the entire model window; no missing window is filled.
+    No deconvolution, moveout correction or amplitude scaling is performed.
     Returns (waveform, metadata). Big- and little-endian SAC are supported.
     """
     path = Path(path)
@@ -45,18 +48,47 @@ def read_eqr(path):
         footer = stream.read(176) if version == 7 else b''
         if version == 7:
             dt, begin, end = map(float, np.frombuffer(footer, order+'f8')[:3])
-    if not all(np.isfinite([dt, begin, end])) or begin == -12345 or end == -12345:
+    if not all(np.isfinite([dt, begin, end])) or dt <= 0 or begin == -12345 or end == -12345:
         raise ValueError('Missing or nonfinite SAC time grid')
-    if not np.isclose(dt, .1, atol=1e-7, rtol=0):
-        raise ValueError('Expected delta=0.1 s; adapt other sampling intervals explicitly')
     if not np.isclose(begin+(n-1)*dt, end, atol=max(1e-4, abs(end)*2e-7), rtol=0):
         raise ValueError('SAC b/e/npts/delta are inconsistent')
-    start = round((-10.-begin)/dt)
-    if start < 0 or start+501 > n or not np.isclose(begin+start*dt, -10., atol=1e-5, rtol=0):
-        raise ValueError('RF must cover the observed [-10, 40] s grid relative to P=0')
     if not np.isfinite(wave).all():
         raise ValueError('Nonfinite SAC waveform')
-    wave = wave[start:start+501].copy()
+    same_rate = np.isclose(dt, .1, atol=1e-7, rtol=0)
+    start = round((-10.-begin)/dt)
+    aligned = same_rate and start >= 0 and start+501 <= n and np.isclose(begin+start*dt, -10., atol=1e-5, rtol=0)
+    up = down = 1
+    if aligned:
+        # Preserve original inference exactly for already compatible inputs.
+        wave = wave[start:start+501].copy()
+    else:
+        if not resample:
+            if not same_rate:
+                raise ValueError('Expected delta=0.1 s; use --resample for other sampling intervals')
+            raise ValueError('RF must cover the observed [-10, 40] s grid relative to P=0; use --resample to align a shifted grid')
+        if n < 2 or begin > -10.+1e-5 or begin+(n-1)*dt < 40.-1e-5:
+            raise ValueError('RF must cover the observed [-10, 40] s window; resampling cannot fill missing time')
+        from scipy.signal import resample_poly
+        ratio = Fraction(dt/.1).limit_denominator(1000)
+        up, down = ratio.numerator, ratio.denominator
+        if up < 1 or max(up, down) > 1000 or not np.isclose(dt*down/up, .1, rtol=1e-6, atol=1e-9):
+            raise ValueError('Sampling interval cannot be represented accurately within the supported resampling ratio')
+        if n*up/down > 20_000_000:
+            raise ValueError('Resampling would exceed 20 million samples; crop the RF with margins before screening')
+        step = dt*down/up
+        source = wave.astype(np.float64)
+        # Ensure an output grid point brackets t=40, even with a fractional
+        # start time. Extend only the FIR boundary's linear trend; coverage of
+        # the physical input window was checked above, independently.
+        if begin+(int(np.ceil(n*up/down))-1)*step < 40.:
+            extra = int(np.ceil(step/dt))+1
+            trend = (source[-1]-source[0])/(n-1)
+            source = np.r_[source, source[-1]+trend*np.arange(1, extra+1)]
+        converted = resample_poly(source, up, down, window=('kaiser', 5.0), padtype='line')
+        times = begin+np.arange(len(converted))*step
+        wave = np.interp(np.arange(501)*.1-10., times, converted).astype(np.float32)
+    if not np.isfinite(wave).all():
+        raise ValueError('Nonfinite RF after resampling')
     if not np.any(wave):
         raise ValueError('All-zero RF in the model window')
 
@@ -70,6 +102,10 @@ def read_eqr(path):
 
     return wave, dict(station=string(0), network=string(21), component=string(20),
                       baz=number(52), gcarc=number(53), user4=number(44),
+                      source_samples=n, source_delta_s=dt, source_rate_hz=1./dt,
+                      source_begin_s=begin, source_end_s=end, resampled=not aligned,
+                      resampling_up=up, resampling_down=down,
+                      resampling_method='polyphase_fir_kaiser5+linear_time_alignment' if not aligned else 'none',
                       sha256=hashlib.sha256(header+raw+footer).hexdigest())
 
 
@@ -93,7 +129,8 @@ def _location(path, root, gaussian):
 
 def screen_eqr(directory, output=None, *, predictor=None, model='reference_multifilter',
                seed=None, model_dir=None, device='cpu', cache_dir=None, gaussian=None,
-               batch_size=32, overwrite=False, max_files=None):
+               batch_size=32, overwrite=False, max_files=None, threshold=None,
+               filters=None, resample=False):
     """Write a UTF-8 ``record`` list of retained relative EQR paths.
 
     AG folders identify filter views; identical basenames within one station
@@ -106,6 +143,9 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
     model or a local model_dir. The returned JSON-compatible summary also lives
     at <output>.json. Existing outputs are protected unless overwrite=True.
     FCM is evaluated with the complete valid input pool for each station.
+    threshold overrides this call's good-score cutoff without changing the
+    loaded model. filters selects known Gaussian views (not Hz); resample
+    explicitly enables rate conversion of the observed SAC input.
     """
     from .predictor import RFQCPredictor
 
@@ -114,6 +154,16 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
         raise ValueError('directory must be an existing directory')
     if gaussian is not None and gaussian not in GAUSSIANS:
         raise ValueError('Unsupported Gaussian coefficient (not Hz)')
+    if threshold is not None:
+        if isinstance(threshold, bool) or not np.isfinite(threshold) or not 0 <= threshold <= 1:
+            raise ValueError('threshold must be a finite number in [0, 1]')
+        threshold = float(threshold)
+    if filters is not None:
+        filters = tuple(sorted(set(float(g) for g in filters)))
+        if not filters or any(g not in GAUSSIANS for g in filters):
+            raise ValueError('filters must select Gaussian coefficients from 1, 1.5, 2, 2.5, 3, 4, 5 (not Hz)')
+        if gaussian is not None and gaussian not in filters:
+            raise ValueError('--gaussian is not included in --filters')
     if batch_size < 1 or (max_files is not None and max_files < 1):
         raise ValueError('batch_size and max_files must be positive')
     target = Path(output).expanduser().absolute() if output is not None else root/'record'
@@ -122,7 +172,8 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
     if target.suffix.lower() == '.eqr':
         raise ValueError('The record output must not overwrite an EQR file')
     destinations = dict(record=target, predictions=Path(str(target)+'.predictions.csv'),
-                        rejected=Path(str(target)+'.rejected.csv'), summary=Path(str(target)+'.json'))
+                        rejected=Path(str(target)+'.rejected.csv'), inputs=Path(str(target)+'.inputs.csv'),
+                        summary=Path(str(target)+'.json'))
     for path in destinations.values():
         if path.is_symlink() or (path.exists() and (not overwrite or not path.is_file())):
             raise FileExistsError(f'Output exists or is not a regular file: {path}; choose a new output or use --overwrite')
@@ -133,6 +184,9 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
         raise ValueError('Pass predictor or model_dir, not both')
     if predictor.spec.mode != 'waveform':
         raise ValueError('Directory screening supports waveform models only; descriptor/combined models need supplied descriptors')
+    if filters is not None and predictor.spec.gaussian is not None and predictor.spec.gaussian not in filters:
+        raise ValueError(f'Model requires AG{predictor.spec.gaussian:g}, which is not in --filters; choose a matching model')
+    effective_threshold = predictor.threshold if threshold is None else threshold
 
     # Store only the index in RAM. Load and evaluate one station at a time.
     pools = defaultdict(lambda: defaultdict(list))
@@ -165,6 +219,9 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
                 if '\n' in str(path) or '\r' in str(path):
                     raise ValueError('A record path cannot contain a newline')
                 anchor, view, has_ag = _location(path, root, gaussian)
+                if filters is not None and view not in filters:
+                    reject(path, 'Excluded by requested --filters selection')
+                    continue
                 # Header-only station discovery for layouts without AG folders.
                 # Full parsing below still verifies the header and the waveform.
                 station = anchor.name
@@ -186,7 +243,10 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
 
     target.parent.mkdir(parents=True, exist_ok=True)
     totals = dict(files_found=count, events_screened=0, good_events=0, bad_events=0,
-                  retained_files=0, stations_screened=0)
+                  retained_files=0, stations_screened=0, files_resampled=0)
+    input_fields = ['path','gaussian','source_samples','source_delta_s','source_rate_hz',
+                    'source_begin_s','source_end_s','resampled','resampling_up','resampling_down',
+                    'resampling_method','sha256']
     source_hash = hashlib.sha256()
     started = datetime.now(timezone.utc).isoformat()
     # Inference failures leave previous outputs intact. Publish the plain record
@@ -194,8 +254,11 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
     with tempfile.TemporaryDirectory(prefix='.rfqc-screen-', dir=target.parent) as temporary:
         staging = {key: Path(temporary)/key for key in destinations}
         with staging['record'].open('w', encoding='utf-8', newline='\n') as records, \
-             staging['predictions'].open('w', encoding='utf-8', newline='') as predictions:
+             staging['predictions'].open('w', encoding='utf-8', newline='') as predictions, \
+             staging['inputs'].open('w', encoding='utf-8', newline='') as inputs:
             writer = csv.writer(predictions)
+            input_writer = csv.DictWriter(inputs, fieldnames=input_fields)
+            input_writer.writeheader()
             writer.writerow(['sample_id','station','event','gaussians','p_good','prediction',
                              'threshold','method','seed','files','source_sha256'])
             for (anchor, station), events in sorted(pools.items()):
@@ -212,7 +275,7 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
                             reject(path, f'Unused by single-filter model requiring AG{predictor.spec.gaussian:g}')
                             continue
                         try:
-                            wave, metadata = read_eqr(path)
+                            wave, metadata = read_eqr(path, resample=resample)
                             good.append((view, path, wave, metadata))
                         except (ValueError, OSError) as exc:
                             reject(path, str(exc))
@@ -247,13 +310,17 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
                     paths = [path.relative_to(root).as_posix() for _, path, _, _ in views]
                     hashes = {path.relative_to(root).as_posix(): metadata['sha256'] for _, path, _, metadata in views}
                     sample_id = json.dumps([os.path.relpath(anchor, root), station, event], ensure_ascii=False)
-                    decision = int(prediction.prediction[i])
+                    decision = int(prediction.p_good[i] >= effective_threshold)
                     writer.writerow([sample_id, station, event, ';'.join(f'{g:g}' for g, *_ in views),
-                                     float(prediction.p_good[i]), decision, predictor.threshold,
+                                     float(prediction.p_good[i]), decision, effective_threshold,
                                      predictor.spec.name, predictor.seed, json.dumps(paths, ensure_ascii=False),
                                      json.dumps(hashes, ensure_ascii=False, sort_keys=True)])
                     for path in paths:
                         source_hash.update(json.dumps([path, hashes[path]], ensure_ascii=False).encode('utf-8'))
+                    for view, path, _, metadata in views:
+                        input_writer.writerow(dict(path=path.relative_to(root).as_posix(), gaussian=view,
+                                                   **{k:metadata[k] for k in input_fields[2:]}))
+                        totals['files_resampled'] += int(metadata['resampled'])
                     totals['events_screened'] += 1
                     totals['good_events' if decision else 'bad_events'] += 1
                     if decision:
@@ -265,17 +332,20 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
             writer.writerow(['path','reason'])
             writer.writerows(rejected)
         bundle = getattr(predictor, 'bundle', {})
-        summary = dict(schema=1, status='complete' if totals['events_screened'] else 'no_valid_events',
+        summary = dict(schema=2, status='complete' if totals['events_screened'] else 'no_valid_events',
                        started_utc=started, completed_utc=datetime.now(timezone.utc).isoformat(),
                        directory=str(root), outputs={key:str(path) for key,path in destinations.items()},
-                       model=predictor.spec.name, seed=predictor.seed, threshold=predictor.threshold,
+                       model=predictor.spec.name, seed=predictor.seed, threshold=effective_threshold,
+                       model_threshold=predictor.threshold, threshold_source='model' if threshold is None else 'user',
+                       requested_filters=list(filters) if filters is not None else None,
+                       resampling_enabled=bool(resample), target_grid=dict(start_s=-10.,end_s=40.,delta_s=.1,samples=501),
                        device=str(predictor.device), model_weights_sha256=bundle.get('weights_sha256'),
                        model_bundle_sha256=hashlib.sha256(json.dumps(bundle, sort_keys=True, allow_nan=False).encode()).hexdigest(),
                        **totals, rejected_or_unused_entries=len(rejected),
                        source_manifest_sha256=source_hash.hexdigest(),
-                       output_sha256={key:digest(staging[key]) for key in ['record','predictions','rejected']},
+                       output_sha256={key:digest(staging[key]) for key in ['record','predictions','rejected','inputs']},
                        record_format='UTF-8; one retained EQR path per line, relative to directory; no header',
-                       input_contract='P-referenced radial RF; observed -10..40 s at 0.1 s; Gaussian coefficients are not Hz',
+                       input_contract='P-referenced radial RF; observed coverage -10..40 s; model grid 0.1 s; Gaussian coefficients are not Hz',
                        selection='Joint event decision lists only the valid views used by this model; folder names are not labels')
         staging['summary'].write_text(json.dumps(summary, indent=2, ensure_ascii=False, allow_nan=False)+'\n', encoding='utf-8')
         # mkdir is exclusive on Windows/POSIX, including filesystems without
@@ -291,7 +361,7 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
             for path in destinations.values():
                 if path.is_symlink() or (path.exists() and (not overwrite or not path.is_file())):
                     raise FileExistsError(f'Output appeared during inference: {path}')
-            for key in ['predictions', 'rejected', 'summary', 'record']:
+            for key in ['predictions', 'rejected', 'inputs', 'summary', 'record']:
                 os.replace(staging[key], destinations[key])
         finally:
             lock.rmdir()

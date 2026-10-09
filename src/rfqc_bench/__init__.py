@@ -1,5 +1,5 @@
 """RFQC benchmark: models, trained inference, fitting and evaluation."""
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 from .data import RFData, synthetic_data
 from .metrics import evaluate, label_agreement, station_bootstrap
 from .models import create_model

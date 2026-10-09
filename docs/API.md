@@ -94,25 +94,33 @@ pool timing. For repeated fresh-process rounds and full definitions, see
 [BENCHMARK_zh.md](BENCHMARK_zh.md). Timings generated on new hardware are new
 measurements and do not replace the published snapshot.
 
-## SAC EQR directory screening (v0.1.2)
+## SAC EQR directory screening (v0.1.4)
 
 ```python
 from rfqc_bench import screen_eqr
-summary = screen_eqr("/path/to/all_eqr", output="results/record")
+summary = screen_eqr("/path/to/all_eqr", output="results/record",
+                     threshold=0.7, filters=[1, 3, 5], resample=True)
 # Or reuse a loaded predictor:
 summary = model.screen_eqr("/path/to/another_station")
 ```
 
 `screen_eqr(directory, output=None, *, predictor=None, model='reference_multifilter',
 seed=None, model_dir=None, device='cpu', cache_dir=None, gaussian=None,
-batch_size=32, overwrite=False, max_files=None)` recursively reads binary SAC
+batch_size=32, overwrite=False, max_files=None, threshold=None, filters=None,
+resample=False)` recursively reads binary SAC
 v6/v7 EQR files. The returned dictionary is also saved at `<output>.json`.
 Default output is `<directory>/record`, containing retained paths relative to the
 input directory, one per line. Prediction/provenance and rejection CSVs accompany
 it. No input file is rewritten. Identical event filenames in a station's AG
 directories identify filter views; multi-filter predictions allow missing views.
 Flat inputs require an explicit known `gaussian`. The observed input must cover
-P-referenced −10..40 s at 0.1 s. Existing outputs require a new name or explicit
+P-referenced −10..40 s. `resample=True` enables polyphase rate conversion and
+alignment onto the model's 0.1 s grid; otherwise exact-grid inputs are required.
+`filters` selects supported Gaussian coefficients, not Hz passbands. A single-filter
+model still requires its registered Gaussian. `threshold` applies `p_good >= threshold`
+for this call without mutating the predictor; omitted values use the model threshold.
+The summary records both cutoffs; `<output>.inputs.csv` records source grids and
+rate conversions. Existing outputs require a new name or explicit
 `overwrite=True`. Only waveform configurations are supported by this convenience
 interface; descriptors remain explicit inputs to `.predict()`.
 

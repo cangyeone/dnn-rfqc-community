@@ -1,0 +1,46 @@
+{
+  "version": "0.1.4",
+  "date": "2026-10-09",
+  "scope": "Software interface update, not a new scientific accuracy result",
+  "local_tests": {
+    "passed": 86,
+    "skipped": 0
+  },
+  "server_installed_wheel_tests": {
+    "passed": 82,
+    "skipped": 4,
+    "skip_reason": "Optional ObsPy oracle is not installed on server; all four oracle tests passed locally"
+  },
+  "bundled_weights_verified": 8,
+  "model_catalog_unchanged": true,
+  "source_sha256": {
+    "src/rfqc_bench/eqr.py": "83b8bb62e34cca5636a297c95a90693c0e366eaff9b4560ffc60ec2b771da069",
+    "src/rfqc_bench/api.py": "304a94dccebac0e7b3ef312acf9286b43dbaed87c2e0e1d78458ca26990a92df",
+    "src/rfqc_bench/cli.py": "23da3689dfa87ccded994244a7f00548beb118cfd5ecacca6d301fd4541e7baf",
+    "screen_eqr.sh": "89cce2b810dd27a69ca1397716304128e90b908ef03a236281a6c9a1bae47921",
+    "install.sh": "09fe9252baba2ff330cdbbf34be2f69765a97f2a6f54355850420d490453bb9d",
+    "tests/test_eqr.py": "155869a11bbf0ec3ab1d20042b458663f448037f121a1b5722eccfb98388562f"
+  },
+  "checks": [
+    "custom cutoff boundaries and model/request isolation",
+    "mixed sampling rates and source immutability",
+    "time/peak/amplitude preservation on synthetic RF-like signals",
+    "anti-alias suppression above target Nyquist",
+    "missing-window rejection",
+    "filter selection and model/AG mismatch rejection",
+    "portable Bash launcher with another HOME and paths containing spaces/Chinese",
+    "wheel/sdist metadata and included models",
+    "historical aggregate comparison reproduction"
+  ],
+  "remote_compatibility": {
+    "legacy_command_path_upgraded": true,
+    "default_record_matches_previous_version": true,
+    "observational_fixture_files": 224,
+    "observational_records": 32,
+    "source_files_unchanged": true,
+    "training_runtime_hashes_unchanged": true,
+    "threshold_zero_retains_all_valid_records": true,
+    "threshold_one_retains_zero_fixture_records": true,
+    "single_filter_lists_only_ag3": true
+  }
+}
