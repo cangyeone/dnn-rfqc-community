@@ -1,5 +1,9 @@
 # 对比结果、推理测速与复现
 
+**当前默认权重已更新为 v0.2.0。** 本轮 DB/YP 修正数据 v2 的 10 配置 × 3 种子结果见
+[新版结果与用法](DBYP_V2_zh.md)。下面第 1–2 节及其中推理速度均为旧数据/旧权重的历史实验，
+不能当作本轮新模型的重新测量，也不能与本轮精度合并计算。
+
 ## 1. 直接查看已经完成的对比
 
 [完整结果表](../benchmarks/2026-10-02/generated/COMPARISON.md)包含原三种子精度、
@@ -31,7 +35,8 @@ python scripts/reproduce_comparisons.py --plots
 
 准备符合[输入格式](DATA.md)的 `my_test.npz`。必须包含二值标签、唯一sample_id；
 特征类模型还需要六项提供的特征，FCM需要完整台站池和台站标识。
-默认评估17个主比较配置、每个原登记的三个种子，不训练、不按测试集重新选阈值。
+默认仅评估本轮 DB/YP v2 的 10 个配置、每个三个种子，不训练、不按测试集重新选阈值。
+历史模型必须通过 `--models` 显式指定，不能把它们写成本轮同数据重训的方法。
 
 ```bash
 python scripts/compare_models.py --input my_test.npz --output outputs/accuracy.json --device cuda:0

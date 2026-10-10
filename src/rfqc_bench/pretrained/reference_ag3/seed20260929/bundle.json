@@ -2,37 +2,139 @@
   "schema": 1,
   "method": "reference_ag3",
   "seed": 20260929,
-  "threshold": 0.85,
+  "threshold": 0.8200000000000001,
   "software_version": "0.1.0",
   "license": "GPL-3.0-only",
   "source_repository": "https://github.com/cangyeone/rfqc-bench",
   "preprocessing": {
     "feature_mean": [
-      0.6278169248483835,
-      1.5279118258445075,
-      0.368716149114138,
-      0.5111085426098704,
-      1.5290034839259876,
-      0.8981982482769639
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
     ],
     "feature_std": [
-      1.7489537698707904,
-      1.445345135203667,
-      1.5572425229715583,
-      1.058008660719297,
-      2.961208237637618,
-      0.36889698193836706
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
     ],
-    "wave_scale": 0.5763668119907379,
-    "preprocessing_version": 2,
-    "fit_split": "train"
+    "wave_scale": 0.572002649307251,
+    "image_adapter": false,
+    "fit_split": "train",
+    "preprocessing_version": 2
   },
   "parameters": null,
   "training": {
-    "training_seed": 20260929,
-    "phase_task_transfer": false,
-    "source": "Registered RFQC benchmark adaptation",
-    "selection": "Fixed first seed by default; all available registered seeds are exposed, not selected by test score."
+    "epochs_completed": 25,
+    "history": [
+      {
+        "epoch": 1,
+        "validation_ap": 0.6728404149021032
+      },
+      {
+        "epoch": 2,
+        "validation_ap": 0.8065480811047633
+      },
+      {
+        "epoch": 3,
+        "validation_ap": 0.8647377483937024
+      },
+      {
+        "epoch": 4,
+        "validation_ap": 0.744920948412919
+      },
+      {
+        "epoch": 5,
+        "validation_ap": 0.8178448581619202
+      },
+      {
+        "epoch": 6,
+        "validation_ap": 0.8921810906741328
+      },
+      {
+        "epoch": 7,
+        "validation_ap": 0.8881823617382053
+      },
+      {
+        "epoch": 8,
+        "validation_ap": 0.8337512414862778
+      },
+      {
+        "epoch": 9,
+        "validation_ap": 0.8913485179259166
+      },
+      {
+        "epoch": 10,
+        "validation_ap": 0.8593529115966236
+      },
+      {
+        "epoch": 11,
+        "validation_ap": 0.8436770781536052
+      },
+      {
+        "epoch": 12,
+        "validation_ap": 0.8724290624622821
+      },
+      {
+        "epoch": 13,
+        "validation_ap": 0.8304312000120088
+      },
+      {
+        "epoch": 14,
+        "validation_ap": 0.8875116951917754
+      },
+      {
+        "epoch": 15,
+        "validation_ap": 0.8926102215796089
+      },
+      {
+        "epoch": 16,
+        "validation_ap": 0.8268473221136817
+      },
+      {
+        "epoch": 17,
+        "validation_ap": 0.8704026857674514
+      },
+      {
+        "epoch": 18,
+        "validation_ap": 0.8806063140840517
+      },
+      {
+        "epoch": 19,
+        "validation_ap": 0.7083511231756169
+      },
+      {
+        "epoch": 20,
+        "validation_ap": 0.8853695505767377
+      },
+      {
+        "epoch": 21,
+        "validation_ap": 0.8445672133072509
+      },
+      {
+        "epoch": 22,
+        "validation_ap": 0.683619727409857
+      },
+      {
+        "epoch": 23,
+        "validation_ap": 0.8263572108604406
+      },
+      {
+        "epoch": 24,
+        "validation_ap": 0.7024332608232488
+      },
+      {
+        "epoch": 25,
+        "validation_ap": 0.8180877104671761
+      }
+    ],
+    "cuda_trajectory_bitwise_reproducible": false,
+    "phase_task_transfer": false
   },
   "input_grid": {
     "samples": 501,
@@ -43,5 +145,5 @@
     "bad": 0,
     "good": 1
   },
-  "weights_sha256": "3548cc837512073048f6d74b6eda81f418f71391f16171eb9781eefab9d002c7"
+  "weights_sha256": "991bb102476cea055d4fadd619bbc388cccef564703643339df85f7b50433ea4"
 }

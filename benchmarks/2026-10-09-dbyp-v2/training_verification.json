@@ -1,0 +1,129 @@
+{
+  "status": "passed",
+  "n_runs": 30,
+  "n_test": 27823,
+  "receipts": [
+    {
+      "run": "li2021_cnn_seed20260928",
+      "completion_sha256": "5d2723d599ffedc66ea9f81ab2be27c29e756cd35e5745a1f97da66bfa924fd0"
+    },
+    {
+      "run": "li2021_cnn_seed20260929",
+      "completion_sha256": "bb637b5f3511b50d3398615a79ceae87982ca0fd49d2b2f40f73367bd5c400ab"
+    },
+    {
+      "run": "li2021_cnn_seed20260930",
+      "completion_sha256": "c25f633342c15a04fe1133d19bfd33f6b2b6ae7ad522ebf914ffad947e3fe1e5"
+    },
+    {
+      "run": "gan2021_cnn_seed20260928",
+      "completion_sha256": "630f9f64583f8ac27d4cc34f637f70fae182e90c8720ee1e0d1c2394082a93e8"
+    },
+    {
+      "run": "gan2021_cnn_seed20260929",
+      "completion_sha256": "686ec0ea2ab87974a6d8aa4bcbbf95b0b420a4c6badff4ece5d33a8dbf581dad"
+    },
+    {
+      "run": "gan2021_cnn_seed20260930",
+      "completion_sha256": "476a48bc95c64538fd225d29f2948757b619b16952664723ce11d1fa56f0794e"
+    },
+    {
+      "run": "gong_cnn_bilstm_seed20260928",
+      "completion_sha256": "f68d5ab42b89ec9e899bed6a552e8126dfebc5c886613d59c5ef417805c97359"
+    },
+    {
+      "run": "gong_cnn_bilstm_seed20260929",
+      "completion_sha256": "0b92964b001df6e0167abdf73dac84ee0e8c6f33fb9b6b899fba544701adb4cd"
+    },
+    {
+      "run": "gong_cnn_bilstm_seed20260930",
+      "completion_sha256": "301bf01f7f2340371ac208e2cdbe8a4bca03536302ae4f4369358e06d996b4f8"
+    },
+    {
+      "run": "gan_cnn_seed20260928",
+      "completion_sha256": "98e7fb91534a92d6e503263e1af536a93a4af31c6080d65d4069bd70768b521a"
+    },
+    {
+      "run": "gan_cnn_seed20260929",
+      "completion_sha256": "7c94f1c9b13216649972421d7bd2928c11e564d0473ea77fe6436c4fac8938c8"
+    },
+    {
+      "run": "gan_cnn_seed20260930",
+      "completion_sha256": "fe3b26b313076f935513e9ffd066fdbce146ceac88170e3d6870abf378ab5e40"
+    },
+    {
+      "run": "deeprfqc_seed20260928",
+      "completion_sha256": "7d87ec47d145fb69cdec137fe8f0d12751b1cb2950391f87cf2baa5c5e558d66"
+    },
+    {
+      "run": "deeprfqc_seed20260929",
+      "completion_sha256": "c769992166472715e7140be6c3f8474747a9a415341232242af45d8099fbc672"
+    },
+    {
+      "run": "deeprfqc_seed20260930",
+      "completion_sha256": "5072ec9735d64d871dc71c7881c44c6eadaa879e967b31f00118ca537013bf75"
+    },
+    {
+      "run": "hegaz_capsule_seed20260928",
+      "completion_sha256": "544dcb57cb713f5ec67623938c5d85be682dccd5dd66d7a8929eeb20d1bacbb5"
+    },
+    {
+      "run": "hegaz_capsule_seed20260929",
+      "completion_sha256": "7726e84d5d536ffb33953d3b471c660091308b8fd199ca9eaf532488ef17e3c6"
+    },
+    {
+      "run": "hegaz_capsule_seed20260930",
+      "completion_sha256": "b1f4855394065a19b54a997ef0fc7b4d5714b196c12bf38201bc3a824e5c73a3"
+    },
+    {
+      "run": "chen2026_image_seed20260928",
+      "completion_sha256": "762468f54d4a1e932c415bbb0f430feffc50ef0a1ccfb43b616c03026ab7549e"
+    },
+    {
+      "run": "chen2026_image_seed20260929",
+      "completion_sha256": "d7ff440484e3208faf53dec7aef7ae3a6368fe00ac80d39f8f0fa49a41ae2f8f"
+    },
+    {
+      "run": "chen2026_image_seed20260930",
+      "completion_sha256": "79b764a77730e73812dffaa3de7eb18cd52bec46ffe2daed26dc05fa9509e754"
+    },
+    {
+      "run": "reference_ag3_seed20260928",
+      "completion_sha256": "9d6c33b949cb200179a4e7377b9c1928c657949be39ead11839dab54587d1d6d"
+    },
+    {
+      "run": "reference_ag3_seed20260929",
+      "completion_sha256": "d57db0a12ac23c3f87978adb451ba73a2acc4dd0a28e9bbe49093ed3b4876fc0"
+    },
+    {
+      "run": "reference_ag3_seed20260930",
+      "completion_sha256": "3c69bdbe15ff5982d584c717daaaeeb5d6f234c036efcfce207781514cefbe58"
+    },
+    {
+      "run": "reference_multifilter_seed20260928",
+      "completion_sha256": "440e69e9950720d68469303bf2681cbec4732f0a738fc8172b817630acc36f11"
+    },
+    {
+      "run": "reference_multifilter_seed20260929",
+      "completion_sha256": "a64ace8b3d1278f7e156bc8999877b03316b3fa3798888fa6d968e26a0f27e89"
+    },
+    {
+      "run": "reference_multifilter_seed20260930",
+      "completion_sha256": "441f0ec3fe127d52cd14ae459d4f68af573c2afc3109d72781e655006fa46261"
+    },
+    {
+      "run": "xiong2025_fcm_seed20260928",
+      "completion_sha256": "a0bc20a69732ff48ecc2a78dbc207703d8a2e9e3a07fda1a694199191f2ebb75"
+    },
+    {
+      "run": "xiong2025_fcm_seed20260929",
+      "completion_sha256": "f549d3ecfca0177f6b2ff8b9daad76dd4d6277b0460b17b165fed22d501c5ab9"
+    },
+    {
+      "run": "xiong2025_fcm_seed20260930",
+      "completion_sha256": "bef553c94a15f9d4210b610d0ce88fe34a6279dd021890837dad3014cca2eaf7"
+    }
+  ],
+  "protocol_sha256": "edc675a5526e82f6d2c67d9ad3847eaf973caf45343751137c3886b418b1dd5e",
+  "interpretation": "Three-seed sample SD is training variability, not a generalization confidence interval"
+}

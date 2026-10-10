@@ -1,0 +1,11 @@
+{
+  "sha256": {
+    "training_verification.json": "9369f2d05bde0e899752d9fe074b5a13311c90b9c306c347318bf7c7c853e38c",
+    "method_summary.csv": "873b573e69587dd8a6b0dc6a23c9c6cada2f906c61b30acbe68345e65bd40dd3",
+    "single_multi_paired.csv": "9a0fe96ca6af644715e6ddbdadd52b996b1686f7daeb5b5d552c4163cbb4fa36",
+    "protocol.json": "edc675a5526e82f6d2c67d9ad3847eaf973caf45343751137c3886b418b1dd5e",
+    "seed_metrics.csv": "5bd61888bb76d472f6e2d0a3f7db0156caccb3569c0248abcb596d48a720049a"
+  },
+  "data_included": false,
+  "source": "rfqc_complete_data_20261009_v2/summary and protocol.json"
+}

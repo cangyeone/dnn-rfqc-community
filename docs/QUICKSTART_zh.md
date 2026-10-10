@@ -10,7 +10,7 @@
 需要 Python 3.10 或以上。建议先创建虚拟环境；下面命令可直接通过 pip 安装发布的 wheel，不需要 Git：
 
 ```bash
-python -m pip install https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.1.5/rfqc_bench-0.1.5-py3-none-any.whl
+python -m pip install https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.2.0/rfqc_bench-0.2.0-py3-none-any.whl
 rfqc-bench doctor
 rfqc-bench demo --model gong_cnn
 ```
@@ -19,7 +19,7 @@ rfqc-bench demo --model gong_cnn
 要启用 HTTP API，可安装带 api 扩展的版本：
 
 ```bash
-python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.5"
+python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.0"
 rfqc-bench serve --model gong_cnn
 ```
 

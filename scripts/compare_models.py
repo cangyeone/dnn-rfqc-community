@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse
 import json
 import numpy as np
-from rfqc_bench import RFData, RFQCPredictor, evaluate, list_models
+from rfqc_bench import RFData, RFQCPredictor, evaluate, list_models, available_weights
 from rfqc_bench.io import atomic_json, digest
 
 
@@ -16,7 +16,8 @@ def main():
     p.add_argument('--device',default='cpu');p.add_argument('--batch-size',type=int,default=32)
     p.add_argument('--model-root',type=Path,help='Offline folders METHOD-seedSEED')
     a=p.parse_args();registry={x['name']:x for x in list_models()}
-    names=[n for n in registry if n not in ['reference_ag1','reference_ag5']] if a.models==['primary'] else a.models
+    current={m['name'] for m in available_weights() if m.get('dataset_version')=='dbyp_complete_20261009_v2'}
+    names=[n for n in registry if n in current] if a.models==['primary'] else a.models
     if set(names)-set(registry) or len(set(names))!=len(names):p.error('Unknown or duplicate model')
     if len(set(a.seeds))!=len(a.seeds):p.error('Duplicate seeds would repeat the same model')
     if a.output.exists():p.error('Output exists; choose a new path')

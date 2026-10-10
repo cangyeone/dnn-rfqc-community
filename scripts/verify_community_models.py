@@ -16,7 +16,7 @@ def sha(path):
     return value.hexdigest()
 
 
-def verify(archives=None):
+def verify(archives=None, release=None):
     package = ROOT/'src/rfqc_bench'
     catalog = json.loads((package/'model_zoo.json').read_text())
     entries = catalog['models']
@@ -27,8 +27,10 @@ def verify(archives=None):
     expected |= {(name,seed) for name in ['reference_ag3','reference_multifilter']
                  for seed in [20260928,20260929,20260930]}
     bundled = set()
+    checked_archives = 0
     for entry in entries:
-        prefix = f'https://github.com/cangyeone/dnn-rfqc-community/releases/download/{catalog["release"]}/'
+        entry_release = entry.get('release', catalog['release'])
+        prefix = f'https://github.com/cangyeone/dnn-rfqc-community/releases/download/{entry_release}/'
         if not entry['url'].startswith(prefix):
             raise ValueError('A model URL does not point to this community release')
         if entry.get('bundled_path'):
@@ -40,7 +42,7 @@ def verify(archives=None):
             info = json.loads((folder/'bundle.json').read_text())
             if info['method'] != entry['name'] or info['seed'] != entry['seed']:
                 raise ValueError('Bundle/catalog identity mismatch')
-        if archives is not None:
+        if archives is not None and (release is None or release == entry_release):
             archive = Path(archives)/entry['url'].rsplit('/',1)[1]
             if archive.stat().st_size != entry['size_bytes'] or sha(archive) != entry['sha256']:
                 raise ValueError(f'Archive checksum/size mismatch: {archive}')
@@ -49,14 +51,16 @@ def verify(archives=None):
                 for name, digest in entry['files'].items():
                     if hashlib.sha256(z.read(name)).hexdigest() != digest:
                         raise ValueError(f'Archive member checksum mismatch: {archive}/{name}')
+            checked_archives += 1
     if bundled != expected:raise ValueError('Missing or unexpected single/multi-filter bundled models')
     return dict(passed=True,configurations=len({e['name'] for e in entries}),registered_bundles=len(entries),
-                bundled_verified=len(bundled),release_archives_verified=len(entries) if archives is not None else 0,
+                bundled_verified=len(bundled),release_archives_verified=checked_archives,
                 all_urls_in_community_repository=True,observational_data_included=False)
 
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--archives',type=Path)
+    parser.add_argument('--release',help='Verify archives only for this release in a mixed-version catalog')
     args=parser.parse_args()
-    print(json.dumps(verify(args.archives),indent=2))
+    print(json.dumps(verify(args.archives,args.release),indent=2))

@@ -1,0 +1,249 @@
+{
+  "status": "passed",
+  "version": "0.2.0",
+  "inference_device": "cpu",
+  "comparison": "original CUDA predictions; subset for neural, full station pools for FCM",
+  "tolerance": 0.0001,
+  "runs": 30,
+  "eqr_checks": 2,
+  "receipts": [
+    {
+      "method": "gong_cnn_bilstm",
+      "seed": 20260928,
+      "records": 32,
+      "max_probability_difference": 1.1920928955078125e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "gan_cnn",
+      "seed": 20260928,
+      "records": 32,
+      "max_probability_difference": 1.7881393432617188e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "deeprfqc",
+      "seed": 20260928,
+      "records": 32,
+      "max_probability_difference": 2.384185791015625e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "hegaz_capsule",
+      "seed": 20260928,
+      "records": 32,
+      "max_probability_difference": 1.7881393432617188e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "li2021_cnn",
+      "seed": 20260928,
+      "records": 32,
+      "max_probability_difference": 1.4901161193847656e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "gan2021_cnn",
+      "seed": 20260928,
+      "records": 32,
+      "max_probability_difference": 1.7881393432617188e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "chen2026_image",
+      "seed": 20260928,
+      "records": 32,
+      "max_probability_difference": 3.7550926208496094e-05,
+      "same_decisions": true
+    },
+    {
+      "method": "reference_ag3",
+      "seed": 20260928,
+      "records": 32,
+      "max_probability_difference": 1.2069940567016602e-06,
+      "same_decisions": true
+    },
+    {
+      "method": "reference_multifilter",
+      "seed": 20260928,
+      "records": 32,
+      "max_probability_difference": 8.940696716308594e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "xiong2025_fcm",
+      "seed": 20260928,
+      "records": 27823,
+      "max_probability_difference": 1.1102230246251565e-16,
+      "same_decisions": true
+    },
+    {
+      "method": "gong_cnn_bilstm",
+      "seed": 20260929,
+      "records": 32,
+      "max_probability_difference": 8.195638656616211e-08,
+      "same_decisions": true
+    },
+    {
+      "method": "gan_cnn",
+      "seed": 20260929,
+      "records": 32,
+      "max_probability_difference": 5.960464477539063e-08,
+      "same_decisions": true
+    },
+    {
+      "method": "deeprfqc",
+      "seed": 20260929,
+      "records": 32,
+      "max_probability_difference": 2.682209014892578e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "hegaz_capsule",
+      "seed": 20260929,
+      "records": 32,
+      "max_probability_difference": 4.76837158203125e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "li2021_cnn",
+      "seed": 20260929,
+      "records": 32,
+      "max_probability_difference": 1.1920928955078125e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "gan2021_cnn",
+      "seed": 20260929,
+      "records": 32,
+      "max_probability_difference": 5.289912223815918e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "chen2026_image",
+      "seed": 20260929,
+      "records": 32,
+      "max_probability_difference": 5.6296586990356445e-05,
+      "same_decisions": true
+    },
+    {
+      "method": "reference_ag3",
+      "seed": 20260929,
+      "records": 32,
+      "max_probability_difference": 2.3245811462402344e-06,
+      "same_decisions": true
+    },
+    {
+      "method": "reference_multifilter",
+      "seed": 20260929,
+      "records": 32,
+      "max_probability_difference": 4.291534423828125e-06,
+      "same_decisions": true
+    },
+    {
+      "method": "xiong2025_fcm",
+      "seed": 20260929,
+      "records": 27823,
+      "max_probability_difference": 1.1102230246251565e-16,
+      "same_decisions": true
+    },
+    {
+      "method": "gong_cnn_bilstm",
+      "seed": 20260930,
+      "records": 32,
+      "max_probability_difference": 2.682209014892578e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "gan_cnn",
+      "seed": 20260930,
+      "records": 32,
+      "max_probability_difference": 1.7881393432617188e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "deeprfqc",
+      "seed": 20260930,
+      "records": 32,
+      "max_probability_difference": 1.1920928955078125e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "hegaz_capsule",
+      "seed": 20260930,
+      "records": 32,
+      "max_probability_difference": 4.172325134277344e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "li2021_cnn",
+      "seed": 20260930,
+      "records": 32,
+      "max_probability_difference": 2.384185791015625e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "gan2021_cnn",
+      "seed": 20260930,
+      "records": 32,
+      "max_probability_difference": 2.682209014892578e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "chen2026_image",
+      "seed": 20260930,
+      "records": 32,
+      "max_probability_difference": 7.450580596923828e-05,
+      "same_decisions": true
+    },
+    {
+      "method": "reference_ag3",
+      "seed": 20260930,
+      "records": 32,
+      "max_probability_difference": 3.5762786865234375e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "reference_multifilter",
+      "seed": 20260930,
+      "records": 32,
+      "max_probability_difference": 4.6193599700927734e-07,
+      "same_decisions": true
+    },
+    {
+      "method": "xiong2025_fcm",
+      "seed": 20260930,
+      "records": 27823,
+      "max_probability_difference": 1.1102230246251565e-16,
+      "same_decisions": true
+    },
+    {
+      "eqr_method": "reference_ag3",
+      "scope": "Interface parity, not a new accuracy experiment",
+      "events": 32,
+      "files": 224,
+      "good_events": 8,
+      "retained_files": 8,
+      "record_entries": 8,
+      "max_probability_difference": 1.6689300537109375e-06,
+      "same_decisions": true,
+      "source_files_unchanged": true,
+      "record_matches_predictions": true,
+      "weights_sha256": "7160a6f800dc36e5a28c0e662dc676ca28503a319482776b77cfa825227fa3b1"
+    },
+    {
+      "eqr_method": "reference_multifilter",
+      "scope": "Interface parity, not a new accuracy experiment",
+      "events": 32,
+      "files": 224,
+      "good_events": 8,
+      "retained_files": 56,
+      "record_entries": 8,
+      "max_probability_difference": 1.3113021850585938e-06,
+      "same_decisions": true,
+      "source_files_unchanged": true,
+      "record_matches_predictions": true,
+      "weights_sha256": "e0ec5eff0325cff2f73f87c34037009cc14c22c76feccf6ba8d134aa665a614e"
+    }
+  ]
+}

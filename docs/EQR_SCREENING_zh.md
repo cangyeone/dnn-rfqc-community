@@ -1,6 +1,6 @@
 # 给出 EQR 目录，自动筛选并生成 record
 
-本说明适用于社区版 v0.1.5（目录功能自原项目 v0.1.2 提供）。适合已经计算完成、以直达 P 波为零时刻的径向接收函数
+本说明适用于社区版 v0.2.0（目录功能自原项目 v0.1.2 提供）。适合已经计算完成、以直达 P 波为零时刻的径向接收函数
 （二进制 SAC `.eqr` 文件）。输入目录后自动读取波形、匹配不同滤波结果、调用
 现有模型，输出保留文件清单。**不移动、删除或改写任何原始 EQR 文件。**
 
@@ -9,22 +9,24 @@
 需要 Python 3.10 或以上，推荐虚拟环境：
 
 ```bash
-python -m pip install --upgrade "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.5"
+python -m pip install --upgrade "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.0"
 rfqc-bench screen-eqr "/path/to/all_eqr"
 ```
 
 不安装 HTTP 服务时，可以用不依赖 Git 的 wheel：
 
 ```bash
-python -m pip install --upgrade https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.1.5/rfqc_bench-0.1.5-py3-none-any.whl
+python -m pip install --upgrade https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.2.0/rfqc_bench-0.2.0-py3-none-any.whl
 ```
 
 运行结束后，输入目录内生成 `record`。默认使用现有
 `reference_multifilter` 模型、最早登记的种子及模型保存的验证集阈值。
 Reference 的 AG1/AG3/AG5 单频与多频共 8 份权重随程序提供，默认模型无需下载，
 安装好依赖后可离线使用。其余模型首次使用时从本仓库 Releases 下载对应权重并缓存，
-不下载训练数据。全部 53 份模型参数与原项目 v0.1.0 权重一致，本次未加入仍在进行的
-新 DB/YP 重训权重。完整清单见 [MODELS_zh.md](MODELS_zh.md)。本地模型见第 4 节。
+不下载训练数据。v0.2.0 的 30 份模型来自已完成的 DB/YP 修正数据 v2 重训；
+AG3 与多频内置权重均已更新，AG1/AG5 和特征类模型等 23 份仍为明确标注的历史版本。
+完整清单见 [MODELS_zh.md](MODELS_zh.md)，升级与精度表见 [DBYP_V2_zh.md](DBYP_V2_zh.md)。
+本地模型见第 4 节。
 
 Windows 示例：
 
@@ -62,6 +64,8 @@ CUDA 用户应按 GPU/驱动选择 PyTorch 轮子源，或先在自己的环境�
 `--threshold 0.7` 设置保留规则为 `p_good >= 0.7`。阈值范围为 0～1（含边界），
 0 保留全部有效候选，1 仅保留分数恰为 1 的候选；无效文件始终进入异常清单。
 提高阈值会减少或保持保留数量，不保证精度一定提高。省略时使用模型的验证集阈值。
+v0.2.0 默认种子 20260928 的多频阈值为 **0.90**，AG3 单频为 **0.86**；
+指定其他种子时使用该种子保存的阈值。升级前后权重和预处理参数不同，筛选名单可能变化。
 覆盖仅对本次调用生效，不改模型、默认阈值或其他 HTTP 请求。
 
 `--resample` 从每个 SAC 的 delta 读取采样率，例如 20 Hz、50 Hz、5 Hz，转换为

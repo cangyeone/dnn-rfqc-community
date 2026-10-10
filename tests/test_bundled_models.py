@@ -25,7 +25,15 @@ def test_bundled_catalog_has_both_regimes_and_community_urls():
     assert len(BUNDLED)==8
     assert {name for name,seed in BUNDLED}=={'reference_ag1','reference_ag3','reference_ag5','reference_multifilter'}
     assert len(available_weights())==53
-    assert all('/cangyeone/dnn-rfqc-community/releases/download/v0.1.3/' in m['url'] for m in available_weights())
+    entries=available_weights()
+    fresh=[m for m in entries if m['dataset_version']=='dbyp_complete_20261009_v2']
+    historical=[m for m in entries if m['dataset_version']=='historical_benchmark_v1']
+    assert len(fresh)==30 and len(historical)==23
+    assert len({m['name'] for m in fresh})==10
+    assert all('/cangyeone/dnn-rfqc-community/releases/download/v0.2.0/' in m['url'] for m in fresh)
+    assert all('/cangyeone/dnn-rfqc-community/releases/download/v0.1.3/' in m['url'] for m in historical)
+    assert {(m['name'],m['seed']) for m in fresh if m.get('bundled_path')}=={
+        (name,seed) for name in ['reference_ag3','reference_multifilter'] for seed in [20260928,20260929,20260930]}
 
 
 def test_corrupt_bundled_metadata_fails_without_network(monkeypatch):

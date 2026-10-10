@@ -15,6 +15,21 @@ paths preserved in CSV sidecars. Summary schema 3 adds `record_entries` without
 changing the source-file meaning of `retained_files`. Weights and predictions
 are unchanged; the same software-only release procedure applies.
 
+## Current release: v0.2.0
+
+v0.2.0 replaces 30 model/seed entries with completed corrected-DB/YP v2
+weights. Six embedded AG3/multi-filter bundles are updated; two embedded
+AG1/AG5 bundles and the other historical controls are unchanged. The catalog
+explicitly marks each entry with its release and dataset version. Never overwrite
+v0.1.3 assets. Upload only the 30 new ZIPs, wheel, sdist and checksums to v0.2.0.
+
+`scripts/export_dbyp_models.py` verifies all 30 completion receipts and their
+207 source-file hashes on the experiment host, then copies bundles byte-for-byte
+to deterministic ZIPs. No RFs, labels, per-record predictions or private sample
+lists enter the public export. `scripts/reproduce_dbyp_summary.py` checks the
+published aggregate metrics and paired differences. With the 30 new ZIPs use
+`verify_community_models.py --archives /path/to/zips --release v0.2.0`.
+
 ## Code and trained weights
 
 1. Run `python -m pytest -q` and `python scripts/reproduce_comparisons.py --output /tmp/rfqc-comparison-check`.
@@ -28,17 +43,16 @@ are unchanged; the same software-only release procedure applies.
    wheel outside the source checkout; verify that Reference predictions work
    with network access disabled, and the HTTP extra works when installed.
 5. Commit source and validation receipts. Push without force, tag the checked
-   commit, and upload wheel, sdist and all 53 immutable ZIPs to the matching
+   commit, and upload wheel, sdist and the new immutable ZIPs to the matching
    release of **this repository**. Check release asset SHA256 values against
    `src/rfqc_bench/model_zoo.json` before making the release public.
 6. Test a non-bundled model download from the published community URL. Do not
    claim PyPI availability until an actual PyPI upload and installation succeed.
 
-The current archives are byte-identical mirrors of the original v0.1.0 RF-trained
-weights, not newly exported source-author models. Corrected DB/YP training is
-running separately and contributes no weights to this release. Do not substitute
-those unfinished or unverified experiments. Future weight changes need a new
-version, new catalog hashes and a complete validation record.
+The 23 historical entries remain byte-identical mirrors of original v0.1.0
+RF-trained weights; the 30 updated entries are byte-identical exports from the
+completed DB/YP v2 fits. None are source-author pretrained models. Future weight
+changes need a new version, new catalog hashes and a complete validation record.
 
 `scripts/export_model_zoo.py` is retained as a historical maintainer tool for
 the original benchmark archive. It is not needed for installation or screening;

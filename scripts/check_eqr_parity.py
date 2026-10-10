@@ -41,15 +41,17 @@ def main():
         original=expected[row['station'],row['event']]
         if int(row['prediction'])!=int(original['prediction']):raise ValueError('Archived decision mismatch')
         deltas.append(abs(float(row['p_good'])-float(original['p_good'])))
-        if int(row['prediction']):wanted.update(json.loads(row['files']))
+        if int(row['prediction']):
+            paths=json.loads(row['files'])
+            if not all((root/p).is_file() for p in paths):raise ValueError('Retained source path missing')
+            wanted.update(Path(p).name for p in paths)
     if max(deltas)>args.tolerance:raise ValueError('Score difference exceeds tolerance')
     retained=args.output.read_text(encoding='utf-8').splitlines()
     if set(retained)!=wanted or len(retained)!=len(wanted):raise ValueError('Record list mismatch')
-    if not all((root/p).is_file() for p in retained):raise ValueError('Retained path missing')
     if any(hashlib.sha256(p.read_bytes()).hexdigest()!=h for p,h in before.items()):
         raise ValueError('Input file changed')
     report=dict(scope='Interface parity, not a new accuracy experiment',events=len(predicted),files=len(before),
-                good_events=summary['good_events'],retained_files=len(retained),
+                good_events=summary['good_events'],retained_files=summary['retained_files'],record_entries=len(retained),
                 max_probability_difference=max(deltas),same_decisions=True,source_files_unchanged=True,
                 record_matches_predictions=True,weights_sha256=summary['model_weights_sha256'])
     print(json.dumps(report,indent=2))

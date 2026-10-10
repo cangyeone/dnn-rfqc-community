@@ -3,7 +3,7 @@
 Install the `api` extra and start one model per process:
 
 ```bash
-python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.5"
+python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.0"
 rfqc-bench serve --model gong_cnn --seed 20260928 --device cpu --host 127.0.0.1 --port 8000
 ```
 

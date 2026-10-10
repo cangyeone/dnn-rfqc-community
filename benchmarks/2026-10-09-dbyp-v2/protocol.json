@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "version": "dbyp_complete_20261009_v2",
+  "stage": "frozen_for_training",
+  "scope": "Fresh DB/YP-only benchmark; user explicitly excludes Gong/cross-dataset reruns",
+  "methods": [
+    "li2021_cnn",
+    "gan2021_cnn",
+    "gong_cnn_bilstm",
+    "gan_cnn",
+    "deeprfqc",
+    "hegaz_capsule",
+    "chen2026_image",
+    "reference_ag3",
+    "reference_multifilter",
+    "xiong2025_fcm"
+  ],
+  "excluded_method": "Gong-CNN omitted per updated optimization document; prior results archived",
+  "training": {
+    "seeds": [
+      20260928,
+      20260929,
+      20260930
+    ],
+    "max_epochs": 50,
+    "patience": 10,
+    "batch_size": 32,
+    "balance": "inverse-frequency weighted replacement sampler; no simultaneous class loss weights",
+    "checkpoint_seconds": 60,
+    "initialization": "scratch; no transferred weights",
+    "gpu_uuids": [
+      "GPU-faea7f9b-14c8-100b-fde4-0c29f3b18176",
+      "GPU-f1155490-9346-f0e8-71e1-70a87e9a283e"
+    ],
+    "processes_per_gpu": 2,
+    "source_only_preprocessing": true,
+    "selection": "validation good AP; validation macro-F1 threshold, no test fitting"
+  },
+  "input": {
+    "samples": 501,
+    "dt": 0.1,
+    "time_start": -10,
+    "gaussian_coefficients": [
+      1,
+      1.5,
+      2,
+      2.5,
+      3,
+      4,
+      5
+    ],
+    "single_filter": 3
+  },
+  "data_manifest_sha256": "30513dea447cfc17af8252420981ec5850fb0efbd32eeb99fcb3365dff2da9f4",
+  "diagnostics": {
+    "illustration_seed": 20260928,
+    "stack_window": [
+      -5,
+      20
+    ],
+    "shape_normalizations": [
+      "raw",
+      "per_record_peak"
+    ],
+    "input_fractions": [
+      1,
+      0.5,
+      0.25
+    ],
+    "input_draws": 30,
+    "subsampling_seed": 20261009,
+    "hk": {
+      "gaussian": 3,
+      "h_grid": [
+        20,
+        60,
+        0.5
+      ],
+      "kappa_grid": [
+        1.5,
+        2,
+        0.01
+      ],
+      "vp": 6.3,
+      "weights": [
+        0.7,
+        0.2,
+        0.1
+      ],
+      "kernel": "linear",
+      "amplitude": "raw",
+      "min_rf": 10,
+      "retained_fractions": [
+        1,
+        0.5
+      ],
+      "half_draws": 100,
+      "vp_sensitivity": [
+        6.0,
+        6.6
+      ],
+      "other_sensitivity": [
+        "peak normalization",
+        "hk1.3 kernel"
+      ],
+      "applicability": "All stations computed for manual review; no prior basin/mountain assignment; agreement/stability is not structural accuracy"
+    }
+  },
+  "small_events": {
+    "labels_available": false,
+    "good_filename_means": "all exports, not manual labels",
+    "retrain": false,
+    "evaluate": "Apply new source-fitted models/thresholds; retention/catalog overlap/stack similarity; no classification accuracy",
+    "hk": false,
+    "backazimuth_plots": false,
+    "user_confirmation": "Waveform-only small events; no H-kappa requested, 2026-10-09",
+    "missing_metadata": "No inferred ray parameters/backazimuths; report unmatched records"
+  },
+  "limits": {
+    "no_boot_service": true,
+    "no_scheduled_monitor": true,
+    "manual_resume": true,
+    "preserve_adverse_results": true,
+    "no_extra_seeds": true,
+    "do_not_select_seed_or_station_for_general_claim_by_test_score": true
+  }
+}

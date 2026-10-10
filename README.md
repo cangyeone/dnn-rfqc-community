@@ -3,13 +3,15 @@
 接收函数自动质量筛选：给出 `.eqr` 文件目录，生成保留文件名单 `record`。
 提供 **单频与多频模型、实际训练权重、命令行、Python API 和 HTTP API**。
 
-v0.1.5 支持自定义阈值、选择滤波视图，以及将不同采样率的 SAC 重采样到模型网格。
+v0.2.0 已更新为 **2026-10-09 修正后的 DB/YP 数据重训模型**：10 个配置、每个 3 个种子。
+支持自定义阈值、选择滤波视图，以及将不同采样率的 SAC 重采样到模型网格。
 
 **8 份 Reference 权重直接随源码和 pip 安装包提供**，无需再下载模型；全部
-**19 个配置、53 份已训练模型包**同时放在[本仓库 Releases](https://github.com/cangyeone/dnn-rfqc-community/releases/tag/v0.1.3)。
+**19 个配置、53 份可用模型包**中，30 份是[本轮新权重](https://github.com/cangyeone/dnn-rfqc-community/releases/tag/v0.2.0)，
+23 份保留历史版本。内置 AG3 与多频的 6 份权重已更新，AG1/AG5 的 2 份仍为历史版本。
 不包含观测波形、人工标签或逐条实验预测。
 
-[详细目录筛选说明](docs/EQR_SCREENING_zh.md) · [模型与权重清单](docs/MODELS_zh.md) ·
+[升级与本轮训练结果](docs/DBYP_V2_zh.md) · [详细目录筛选说明](docs/EQR_SCREENING_zh.md) · [模型与权重清单](docs/MODELS_zh.md) ·
 [Python API](docs/API.md) · [HTTP 部署](docs/DEPLOYMENT.md) ·
 [输入格式](docs/DATA.md) · [训练与续训](docs/TRAINING.md) ·
 [方法来源](docs/METHODS.md) · [对比与测速](docs/BENCHMARK_zh.md)
@@ -19,7 +21,7 @@ v0.1.5 支持自定义阈值、选择滤波视图，以及将不同采样率的 
 需要 Python 3.10 或以上，推荐单独的虚拟环境。可直接通过 pip 安装 wheel，无需 Git：
 
 ```bash
-python -m pip install https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.1.5/rfqc_bench-0.1.5-py3-none-any.whl
+python -m pip install --upgrade https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.2.0/rfqc_bench-0.2.0-py3-none-any.whl
 rfqc-bench doctor
 ```
 
@@ -39,7 +41,7 @@ HTTP 服务需要额外依赖，在仓库目录运行 `python -m pip install -e 
 或直接安装指定版本：
 
 ```bash
-python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.1.5"
+python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.0"
 ```
 
 为兼容原接口，**pip 包名仍为 `rfqc-bench`，Python 导入名为 `rfqc_bench`**。
@@ -71,6 +73,8 @@ rfqc-bench screen-eqr "/path/to/all_eqr" --filters 1 3 5 --resample --output "re
 ```
 
 保留规则为 `p_good >= threshold`；省略阈值时使用模型的验证集阈值。
+默认种子 20260928 对应的新阈值为：多频 **0.90**、AG3 单频 **0.86**。
+不同模型和种子各有自己的阈值；自定义阈值会改变筛选名单，本轮精度表不适用于任意阈值。
 `--filters` 是高斯滤波系数，`--resample` 处理时间采样率，两者不同。
 `install.sh` 只创建当前目录的 `.venv`，没有固定用户名，无需 sudo。其他用户在自己的
 电脑安装依赖即可，不需要开发者的 Python 环境；Windows 使用上述 pip 命令。
@@ -136,12 +140,12 @@ XZ_NAQ_2022219_214001.eqr
 
 ## 5. 模型确实包含在程序中
 
-| 内置模型 | 输入 | 随包提供的种子 |
-|---|---|---|
-| `reference_ag1` | 单频 AG1 | 20260929 |
-| `reference_ag3` | 单频 AG3 | 20260928、20260929、20260930 |
-| `reference_ag5` | 单频 AG5 | 20260929 |
-| `reference_multifilter` | 多频，可缺视图 | 20260928、20260929、20260930 |
+| 内置模型 | 输入 | 随包提供的种子 | 训练数据版本 |
+|---|---|---|---|
+| `reference_ag1` | 单频 AG1 | 20260929 | 历史版本，本轮未重训 |
+| `reference_ag3` | 单频 AG3 | 20260928、20260929、20260930 | DB/YP 修正数据 v2 |
+| `reference_ag5` | 单频 AG5 | 20260929 | 历史版本，本轮未重训 |
+| `reference_multifilter` | 多频，可缺视图 | 20260928、20260929、20260930 | DB/YP 修正数据 v2 |
 
 实际权重在 [`src/rfqc_bench/pretrained/`](src/rfqc_bench/pretrained/)，每份包含
 `bundle.json` 和 `weights.safetensors`，不是 Git LFS 指针或随机网络。
@@ -211,9 +215,12 @@ python scripts/verify_community_models.py
 训练/续训方法见[训练说明](docs/TRAINING.md)，历史结果与推理测速见
 [对比说明](docs/BENCHMARK_zh.md)。安装和预测不会启动训练队列、定时任务或开机服务。
 
-社区版本基于 RFQC Bench `d44b016`，本次所有权重与原公开 v0.1.0 参数逐字节一致。
+社区代码基于 RFQC Bench `d44b016`。v0.2.0 的 30 份新模型通过完成凭据、数据协议和文件哈希核验，
+直接发布训练输出，未按测试精度挑选种子；其余 23 份历史模型保持原文件不变。
 它们是本项目在 RF 数据上训练的文献方法改编版，不是各论文作者的原始预训练模型，
-不包含相位拾取迁移权重。修正数据后的新 DB/YP 重训单独进行，尚未核验的权重**没有混入**本次发布。
+不包含相位拾取迁移权重。本轮 27,823 条留出台站测试上，AG3、多频、Gong-BiLSTM 的
+三种子平均准确率分别为 95.43%、95.54%、96.06%；多频相对 AG3 仅高 0.11 个百分点。
+完整指标、标准差和适用范围见[本轮结果](docs/DBYP_V2_zh.md)，不与旧数据上的历史分数混算。
 good 分数不是校准后的物理可用性概率，新地区的适用性仍需独立评价。
 
 软件与模型按 GPL-3.0-only 发行，来源与第三方声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)

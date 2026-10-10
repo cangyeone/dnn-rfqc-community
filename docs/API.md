@@ -94,7 +94,13 @@ pool timing. For repeated fresh-process rounds and full definitions, see
 [BENCHMARK_zh.md](BENCHMARK_zh.md). Timings generated on new hardware are new
 measurements and do not replace the published snapshot.
 
-## SAC EQR directory screening (v0.1.5)
+## SAC EQR directory screening (v0.2.0)
+
+The default Reference AG3/multi-filter bundles now use the corrected DB/YP v2
+training (three seeds each). The default seed remains 20260928; its thresholds
+are 0.86 / 0.90, respectively. `available_weights()` exposes `dataset_version`
+and `release` for each bundle. AG1/AG5 and descriptor controls retain historical
+weights; see [version and result notes](DBYP_V2_zh.md).
 
 ```python
 from rfqc_bench import screen_eqr

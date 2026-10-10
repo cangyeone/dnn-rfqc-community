@@ -1,5 +1,10 @@
 # Training and manual recovery
 
+The v0.2.0 release includes 30 completed DB/YP revision-2 fits (10 configurations,
+three seeds), with Reference AG3 and multi-filter weights embedded. Other
+registered controls remain historical unless explicitly marked otherwise in
+the model catalog. See [current results and provenance](DBYP_V2_zh.md).
+
 `fit(method, train, validation, output, seed=20260928, epochs=50, patience=10,
 batch_size=32, device='cpu', resume=False, checkpoint_seconds=60)` supports all
 19 configurations. Use explicit user-owned train and validation inputs with

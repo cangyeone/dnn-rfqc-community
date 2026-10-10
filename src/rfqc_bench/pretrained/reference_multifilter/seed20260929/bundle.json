@@ -2,37 +2,159 @@
   "schema": 1,
   "method": "reference_multifilter",
   "seed": 20260929,
-  "threshold": 0.85,
+  "threshold": 0.9,
   "software_version": "0.1.0",
   "license": "GPL-3.0-only",
   "source_repository": "https://github.com/cangyeone/rfqc-bench",
   "preprocessing": {
     "feature_mean": [
-      0.6803467580203917,
-      1.6037271835686104,
-      0.38633821872924223,
-      0.48519696619947833,
-      1.3746756447271171,
-      0.7855124819997432
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
     ],
     "feature_std": [
-      1.7723629761494106,
-      1.4557960110112356,
-      1.5790412079763918,
-      1.0403144168144545,
-      2.558573926078952,
-      0.3937837891965072
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
     ],
-    "wave_scale": 0.6187677681446075,
-    "preprocessing_version": 2,
-    "fit_split": "train"
+    "wave_scale": 0.6125050187110901,
+    "image_adapter": false,
+    "fit_split": "train",
+    "preprocessing_version": 2
   },
   "parameters": null,
   "training": {
-    "training_seed": 20260929,
-    "phase_task_transfer": false,
-    "source": "Registered RFQC benchmark adaptation",
-    "selection": "Fixed first seed by default; all available registered seeds are exposed, not selected by test score."
+    "epochs_completed": 30,
+    "history": [
+      {
+        "epoch": 1,
+        "validation_ap": 0.7364611390004795
+      },
+      {
+        "epoch": 2,
+        "validation_ap": 0.8175759007148513
+      },
+      {
+        "epoch": 3,
+        "validation_ap": 0.867418128641919
+      },
+      {
+        "epoch": 4,
+        "validation_ap": 0.7919888010605198
+      },
+      {
+        "epoch": 5,
+        "validation_ap": 0.82734955144334
+      },
+      {
+        "epoch": 6,
+        "validation_ap": 0.8798718809861833
+      },
+      {
+        "epoch": 7,
+        "validation_ap": 0.8801278604519405
+      },
+      {
+        "epoch": 8,
+        "validation_ap": 0.865796645762217
+      },
+      {
+        "epoch": 9,
+        "validation_ap": 0.8968330118922001
+      },
+      {
+        "epoch": 10,
+        "validation_ap": 0.878349314850668
+      },
+      {
+        "epoch": 11,
+        "validation_ap": 0.8892540015609413
+      },
+      {
+        "epoch": 12,
+        "validation_ap": 0.8917854557231693
+      },
+      {
+        "epoch": 13,
+        "validation_ap": 0.859880963943536
+      },
+      {
+        "epoch": 14,
+        "validation_ap": 0.9012053666552253
+      },
+      {
+        "epoch": 15,
+        "validation_ap": 0.8836475655905611
+      },
+      {
+        "epoch": 16,
+        "validation_ap": 0.850185930418372
+      },
+      {
+        "epoch": 17,
+        "validation_ap": 0.8577880213236029
+      },
+      {
+        "epoch": 18,
+        "validation_ap": 0.8826812952365037
+      },
+      {
+        "epoch": 19,
+        "validation_ap": 0.8288931992120777
+      },
+      {
+        "epoch": 20,
+        "validation_ap": 0.9019407773314697
+      },
+      {
+        "epoch": 21,
+        "validation_ap": 0.8627614665719706
+      },
+      {
+        "epoch": 22,
+        "validation_ap": 0.7451902848950849
+      },
+      {
+        "epoch": 23,
+        "validation_ap": 0.8423967794199719
+      },
+      {
+        "epoch": 24,
+        "validation_ap": 0.7828821910523396
+      },
+      {
+        "epoch": 25,
+        "validation_ap": 0.8295224277012709
+      },
+      {
+        "epoch": 26,
+        "validation_ap": 0.893134355637891
+      },
+      {
+        "epoch": 27,
+        "validation_ap": 0.7605853144161966
+      },
+      {
+        "epoch": 28,
+        "validation_ap": 0.8881753367797081
+      },
+      {
+        "epoch": 29,
+        "validation_ap": 0.8730393387073415
+      },
+      {
+        "epoch": 30,
+        "validation_ap": 0.8043179852034223
+      }
+    ],
+    "cuda_trajectory_bitwise_reproducible": false,
+    "phase_task_transfer": false
   },
   "input_grid": {
     "samples": 501,
@@ -43,5 +165,5 @@
     "bad": 0,
     "good": 1
   },
-  "weights_sha256": "f7a88b00e679271dead60a7c2a46d332703b8dd172689eca120b4f4aac3b9592"
+  "weights_sha256": "5ec6e84ed26db79f3782dc578a9b5e20f7dad80b39a91fadce0817040ed482ff"
 }
