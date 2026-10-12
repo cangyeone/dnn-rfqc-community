@@ -64,7 +64,7 @@ class RFQCPredictor:
         return cls.from_directory(download_model(name,seed,cache_dir),device)
 
     def screen_eqr(self,directory,output=None,**kwargs):
-        """Screen a SAC EQR directory using this already-loaded model."""
+        """Screen EQR or text exports (input_type='files') with this loaded model."""
         from .eqr import screen_eqr
         return screen_eqr(directory,output,predictor=self,**kwargs)
 

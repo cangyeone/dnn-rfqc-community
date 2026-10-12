@@ -16,44 +16,9 @@ from .data import GAUSSIANS, RFData
 from .io import digest
 
 
-def read_eqr(path, *, resample=False):
-    """Read a binary SAC RF onto the model's [-10, 40] s, 0.1 s grid.
-
-    Time zero must already be the direct P arrival. With resample=True, use
-    polyphase FIR rate conversion and linear time-grid alignment. The observed
-    source must cover the entire model window; no missing window is filled.
-    No deconvolution, moveout correction or amplitude scaling is performed.
-    Returns (waveform, metadata). Big- and little-endian SAC are supported.
-    """
-    path = Path(path)
-    with path.open('rb') as stream:
-        header = stream.read(632)
-        if len(header) != 632:
-            raise ValueError('Truncated SAC header (expected 632 bytes)')
-        orders = [o for o in ('<', '>') if np.frombuffer(header, o+'i4', 40, 280)[6] in (6, 7)]
-        if len(orders) != 1:
-            raise ValueError('Expected binary SAC version 6 or 7')
-        order = orders[0]
-        floats = np.frombuffer(header, order+'f4', 70)
-        ints = np.frombuffer(header, order+'i4', 40, 280)
-        n, version = int(ints[9]), int(ints[6])
-        if ints[15] != 1 or ints[35] != 1:
-            raise ValueError('Expected an evenly sampled SAC time series (IFTYPE=ITIME, LEVEN=1)')
-        size = 632 + 4*n + (176 if version == 7 else 0)
-        if n < 1 or n > 10_000_000 or os.fstat(stream.fileno()).st_size != size:
-            raise ValueError('Invalid SAC sample count or file length')
-        raw = stream.read(4*n)
-        wave = np.frombuffer(raw, order+'f4').astype(np.float32)
-        dt, begin, end = map(float, floats[[0, 5, 6]])
-        footer = stream.read(176) if version == 7 else b''
-        if version == 7:
-            dt, begin, end = map(float, np.frombuffer(footer, order+'f8')[:3])
-    if not all(np.isfinite([dt, begin, end])) or dt <= 0 or begin == -12345 or end == -12345:
-        raise ValueError('Missing or nonfinite SAC time grid')
-    if not np.isclose(begin+(n-1)*dt, end, atol=max(1e-4, abs(end)*2e-7), rtol=0):
-        raise ValueError('SAC b/e/npts/delta are inconsistent')
-    if not np.isfinite(wave).all():
-        raise ValueError('Nonfinite SAC waveform')
+def _prepare_waveform(wave, dt, begin, *, resample=False):
+    """Apply the same observed time-grid conversion to SAC and text exports."""
+    n = len(wave)
     same_rate = np.isclose(dt, .1, atol=1e-7, rtol=0)
     start = round((-10.-begin)/dt)
     aligned = same_rate and start >= 0 and start+501 <= n and np.isclose(begin+start*dt, -10., atol=1e-5, rtol=0)
@@ -92,6 +57,50 @@ def read_eqr(path, *, resample=False):
     if not np.any(wave):
         raise ValueError('All-zero RF in the model window')
 
+    return wave, dict(resampled=not aligned, resampling_up=up, resampling_down=down,
+                      resampling_method='polyphase_fir_kaiser5+linear_time_alignment' if not aligned else 'none')
+
+
+def read_eqr(path, *, resample=False):
+    """Read a binary SAC RF onto the model's [-10, 40] s, 0.1 s grid.
+
+    Time zero must already be the direct P arrival. With resample=True, use
+    polyphase FIR rate conversion and linear time-grid alignment. The observed
+    source must cover the entire model window; no missing window is filled.
+    No deconvolution, moveout correction or amplitude scaling is performed.
+    Returns (waveform, metadata). Big- and little-endian SAC are supported.
+    """
+    path = Path(path)
+    with path.open('rb') as stream:
+        header = stream.read(632)
+        if len(header) != 632:
+            raise ValueError('Truncated SAC header (expected 632 bytes)')
+        orders = [o for o in ('<', '>') if np.frombuffer(header, o+'i4', 40, 280)[6] in (6, 7)]
+        if len(orders) != 1:
+            raise ValueError('Expected binary SAC version 6 or 7')
+        order = orders[0]
+        floats = np.frombuffer(header, order+'f4', 70)
+        ints = np.frombuffer(header, order+'i4', 40, 280)
+        n, version = int(ints[9]), int(ints[6])
+        if ints[15] != 1 or ints[35] != 1:
+            raise ValueError('Expected an evenly sampled SAC time series (IFTYPE=ITIME, LEVEN=1)')
+        size = 632 + 4*n + (176 if version == 7 else 0)
+        if n < 1 or n > 10_000_000 or os.fstat(stream.fileno()).st_size != size:
+            raise ValueError('Invalid SAC sample count or file length')
+        raw = stream.read(4*n)
+        wave = np.frombuffer(raw, order+'f4').astype(np.float32)
+        dt, begin, end = map(float, floats[[0, 5, 6]])
+        footer = stream.read(176) if version == 7 else b''
+        if version == 7:
+            dt, begin, end = map(float, np.frombuffer(footer, order+'f8')[:3])
+    if not all(np.isfinite([dt, begin, end])) or dt <= 0 or begin == -12345 or end == -12345:
+        raise ValueError('Missing or nonfinite SAC time grid')
+    if not np.isclose(begin+(n-1)*dt, end, atol=max(1e-4, abs(end)*2e-7), rtol=0):
+        raise ValueError('SAC b/e/npts/delta are inconsistent')
+    if not np.isfinite(wave).all():
+        raise ValueError('Nonfinite SAC waveform')
+    wave, conversion = _prepare_waveform(wave, dt, begin, resample=resample)
+
     def number(index):
         value = float(floats[index])
         return value if np.isfinite(value) and value != -12345 else None
@@ -103,9 +112,7 @@ def read_eqr(path, *, resample=False):
     return wave, dict(station=string(0), network=string(21), component=string(20),
                       baz=number(52), gcarc=number(53), user4=number(44),
                       source_samples=n, source_delta_s=dt, source_rate_hz=1./dt,
-                      source_begin_s=begin, source_end_s=end, resampled=not aligned,
-                      resampling_up=up, resampling_down=down,
-                      resampling_method='polyphase_fir_kaiser5+linear_time_alignment' if not aligned else 'none',
+                      source_begin_s=begin, source_end_s=end, **conversion,
                       sha256=hashlib.sha256(header+raw+footer).hexdigest())
 
 
@@ -130,7 +137,7 @@ def _location(path, root, gaussian):
 def screen_eqr(directory, output=None, *, predictor=None, model='reference_multifilter',
                seed=None, model_dir=None, device='cpu', cache_dir=None, gaussian=None,
                batch_size=32, overwrite=False, max_files=None, threshold=None,
-               filters=None, resample=False):
+               filters=None, resample=False, input_type='eqr'):
     """Write a UTF-8 ``record`` list of unique retained EQR basenames.
 
     AG folders identify filter views; identical basenames within one station
@@ -148,7 +155,17 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
     threshold overrides this call's good-score cutoff without changing the
     loaded model. filters selects known Gaussian views (not Hz); resample
     explicitly enables rate conversion of the observed SAC input.
+    input_type='files' instead reads filename-bearing text waveform exports,
+    preserving the same model and record convention.
     """
+    if input_type == 'files':
+        from .files_input import screen_files
+        return screen_files(directory, output, predictor=predictor, model=model, seed=seed,
+                            model_dir=model_dir, device=device, cache_dir=cache_dir, gaussian=gaussian,
+                            batch_size=batch_size, overwrite=overwrite, max_files=max_files,
+                            threshold=threshold, filters=filters, resample=resample)
+    if input_type != 'eqr':
+        raise ValueError("input_type must be 'eqr' or 'files'")
     from .predictor import RFQCPredictor
 
     root = Path(directory).expanduser().resolve(strict=True)
@@ -339,7 +356,7 @@ def screen_eqr(directory, output=None, *, predictor=None, model='reference_multi
             writer.writerow(['path','reason'])
             writer.writerows(rejected)
         bundle = getattr(predictor, 'bundle', {})
-        summary = dict(schema=3, status='complete' if totals['events_screened'] else 'no_valid_events',
+        summary = dict(schema=3, input_type='eqr', status='complete' if totals['events_screened'] else 'no_valid_events',
                        started_utc=started, completed_utc=datetime.now(timezone.utc).isoformat(),
                        directory=str(root), outputs={key:str(path) for key,path in destinations.items()},
                        model=predictor.spec.name, seed=predictor.seed, threshold=effective_threshold,

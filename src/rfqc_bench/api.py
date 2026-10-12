@@ -1,6 +1,6 @@
 """Optional FastAPI service; configure the model at startup, not per request."""
 from threading import Lock
-from typing import Any
+from typing import Any, Literal
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
@@ -30,12 +30,13 @@ class PredictResponse(BaseModel):
 
 class ScreenEQRRequest(BaseModel):
     model_config=ConfigDict(extra='forbid')
-    directory: str = Field(description='Directory relative to the configured server eqr_root')
+    directory: str = Field(description='Input directory or export file relative to the configured server eqr_root')
     output: str | None = Field(default=None,description='Record path relative to eqr_root; default: directory/record')
     gaussian: float | None = None
     threshold: float | None = Field(default=None,ge=0,le=1,description='Per-request score cutoff; does not mutate the model')
     filters: list[float] | None = None
     resample: bool = False
+    input_type: Literal['eqr','files'] = 'eqr'
 
 
 def create_app(predictor,max_records=4096,batch_size=32,*,eqr_root=None,max_eqr_files=100000):
@@ -85,11 +86,12 @@ def create_app(predictor,max_records=4096,batch_size=32,*,eqr_root=None,max_eqr_
             raise HTTPException(status_code=403,detail='Directory screening is disabled; configure --eqr-root at server startup')
         try:
             directory=confined(request.directory)
-            output=confined(request.output) if request.output is not None else directory/'record'
+            output=confined(request.output) if request.output is not None else None
             with lock:
                 return predictor.screen_eqr(directory,output,gaussian=request.gaussian,
                                             batch_size=batch_size,max_files=max_eqr_files,
-                                            threshold=request.threshold,filters=request.filters,resample=request.resample)
+                                            threshold=request.threshold,filters=request.filters,resample=request.resample,
+                                            input_type=request.input_type)
         except FileExistsError as exc:raise HTTPException(status_code=409,detail=str(exc)) from exc
         except (ValueError,OSError) as exc:raise HTTPException(status_code=422,detail=str(exc)) from exc
     return app

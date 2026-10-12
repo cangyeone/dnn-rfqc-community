@@ -3,7 +3,11 @@
 接收函数自动质量筛选：给出 `.eqr` 文件目录，生成保留文件名单 `record`。
 提供 **单频与多频模型、实际训练权重、命令行、Python API 和 HTTP API**。
 
-v0.2.0 已更新为 **2026-10-09 修正后的 DB/YP 数据重训模型**：10 个配置、每个 3 个种子。
+**新增 files 波形导出输入**：`--input-type files` 可读取 `YP_NE3A/AG*/good_1667`
+这类每行含文件名与波形的文本；原 SAC 输入使用 `--input-type eqr`（默认）。
+详见 [两种输入的完整说明](docs/FILES_SCREENING_zh.md)。
+
+v0.2.1 使用 **2026-10-09 修正后的 DB/YP 数据重训模型**：10 个配置、每个 3 个种子。
 支持自定义阈值、选择滤波视图，以及将不同采样率的 SAC 重采样到模型网格。
 
 **8 份 Reference 权重直接随源码和 pip 安装包提供**，无需再下载模型；全部
@@ -21,7 +25,7 @@ v0.2.0 已更新为 **2026-10-09 修正后的 DB/YP 数据重训模型**：10 �
 需要 Python 3.10 或以上，推荐单独的虚拟环境。可直接通过 pip 安装 wheel，无需 Git：
 
 ```bash
-python -m pip install --upgrade https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.2.0/rfqc_bench-0.2.0-py3-none-any.whl
+python -m pip install --upgrade https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.2.1/rfqc_bench-0.2.1-py3-none-any.whl
 rfqc-bench doctor
 ```
 
@@ -41,7 +45,7 @@ HTTP 服务需要额外依赖，在仓库目录运行 `python -m pip install -e 
 或直接安装指定版本：
 
 ```bash
-python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.0"
+python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.1"
 ```
 
 为兼容原接口，**pip 包名仍为 `rfqc-bench`，Python 导入名为 `rfqc_bench`**。
@@ -54,6 +58,9 @@ CUDA 机器先安装适配自身硬件/驱动的 PyTorch，再安装本包；默
 ```bash
 # 多频联合判断：默认 Reference 多频模型
 rfqc-bench screen-eqr "/path/to/all_eqr"
+
+# 每行含 .eqr 文件名、采样信息和振幅的 files 导出；ZIP 先解压
+rfqc-bench screen-eqr "/path/to/YP_NE3A" --input-type files --output "results/record_files"
 
 # 单频 AG3：只使用 AG3，输出也只列出 AG3 文件
 rfqc-bench screen-eqr "/path/to/all_eqr" --model reference_ag3 --output "results/record_ag3"

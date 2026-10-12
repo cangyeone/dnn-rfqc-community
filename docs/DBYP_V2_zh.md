@@ -9,18 +9,18 @@
 在你自己的 Python 3.10+ 环境中运行，无需训练数据或开发者账号：
 
 ```bash
-python -m pip install --upgrade https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.2.0/rfqc_bench-0.2.0-py3-none-any.whl
+python -m pip install --upgrade https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.2.1/rfqc_bench-0.2.1-py3-none-any.whl
 python -c "import rfqc_bench; print(rfqc_bench.__version__, rfqc_bench.__file__)"
 rfqc-bench doctor
 ```
 
-版本应显示 `0.2.0`。若显示旧版或另一份源码目录，请在实际运行筛选的那个环境安装。
+当前安装版本应显示 `0.2.1`（训练权重仍来自 v0.2.0）。若显示旧版或另一份源码目录，请在实际运行筛选的那个环境安装。
 本版通过 GitHub wheel/Git 安装，没有发布到 PyPI。
 
 源码新安装：
 
 ```bash
-git clone --branch v0.2.0 https://github.com/cangyeone/dnn-rfqc-community.git
+git clone --branch v0.2.1 https://github.com/cangyeone/dnn-rfqc-community.git
 cd dnn-rfqc-community
 bash install.sh
 bash screen_eqr.sh "/path/to/all_eqr" --resample
@@ -104,7 +104,7 @@ for item in available_weights():
 HTTP 需要 API 依赖，先在目标环境执行：
 
 ```bash
-python -m pip install --upgrade "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.0"
+python -m pip install --upgrade "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.1"
 rfqc-bench serve --model reference_multifilter --eqr-root "/srv/rfqc" --host 127.0.0.1 --port 8000
 curl -X POST http://127.0.0.1:8000/screen-eqr -H "Content-Type: application/json" \
   -d '{"directory":"incoming/all_eqr","output":"results/record","resample":true,"threshold":0.8}'

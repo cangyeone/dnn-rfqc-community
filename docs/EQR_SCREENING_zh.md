@@ -1,22 +1,25 @@
 # 给出 EQR 目录，自动筛选并生成 record
 
-本说明适用于社区版 v0.2.0（目录功能自原项目 v0.1.2 提供）。适合已经计算完成、以直达 P 波为零时刻的径向接收函数
+本说明适用于社区版 v0.2.1（目录功能自原项目 v0.1.2 提供）。适合已经计算完成、以直达 P 波为零时刻的径向接收函数
 （二进制 SAC `.eqr` 文件）。输入目录后自动读取波形、匹配不同滤波结果、调用
 现有模型，输出保留文件清单。**不移动、删除或改写任何原始 EQR 文件。**
+
+本页描述默认的 `--input-type eqr`。如果输入是每行记录文件名和波形的 `good_N`
+等文本，使用 `--input-type files`，详见 [files 输入说明](FILES_SCREENING_zh.md)。
 
 ## 1. 安装和最简单的调用
 
 需要 Python 3.10 或以上，推荐虚拟环境：
 
 ```bash
-python -m pip install --upgrade "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.0"
+python -m pip install --upgrade "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.1"
 rfqc-bench screen-eqr "/path/to/all_eqr"
 ```
 
 不安装 HTTP 服务时，可以用不依赖 Git 的 wheel：
 
 ```bash
-python -m pip install --upgrade https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.2.0/rfqc_bench-0.2.0-py3-none-any.whl
+python -m pip install --upgrade https://github.com/cangyeone/dnn-rfqc-community/releases/download/v0.2.1/rfqc_bench-0.2.1-py3-none-any.whl
 ```
 
 运行结束后，输入目录内生成 `record`。默认使用现有

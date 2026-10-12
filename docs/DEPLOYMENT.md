@@ -1,9 +1,12 @@
 # HTTP API and deployment
 
+The directory endpoint also accepts `input_type: "files"` for filename-bearing
+text exports. Omitting it keeps binary SAC mode. See [files examples](FILES_SCREENING_zh.md).
+
 Install the `api` extra and start one model per process:
 
 ```bash
-python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.0"
+python -m pip install "rfqc-bench[api] @ git+https://github.com/cangyeone/dnn-rfqc-community.git@v0.2.1"
 rfqc-bench serve --model gong_cnn --seed 20260928 --device cpu --host 127.0.0.1 --port 8000
 ```
 

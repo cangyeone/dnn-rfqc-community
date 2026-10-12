@@ -15,7 +15,15 @@ paths preserved in CSV sidecars. Summary schema 3 adds `record_entries` without
 changing the source-file meaning of `retained_files`. Weights and predictions
 are unchanged; the same software-only release procedure applies.
 
-## Current release: v0.2.0
+## Current software release: v0.2.1
+
+v0.2.1 adds filename-bearing waveform exports through `--input-type files`,
+with the same thresholds, resampling grid and unique-basename record convention.
+Input rows and original files are never rewritten. Source paths/line numbers
+remain in CSV sidecars. The current model catalog and all weights are unchanged
+from v0.2.0/v0.1.3; upload only the new wheel, sdist and checksum file.
+
+## Current trained-model release: v0.2.0
 
 v0.2.0 replaces 30 model/seed entries with completed corrected-DB/YP v2
 weights. Six embedded AG3/multi-filter bundles are updated; two embedded

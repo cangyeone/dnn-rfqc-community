@@ -94,7 +94,7 @@ pool timing. For repeated fresh-process rounds and full definitions, see
 [BENCHMARK_zh.md](BENCHMARK_zh.md). Timings generated on new hardware are new
 measurements and do not replace the published snapshot.
 
-## SAC EQR directory screening (v0.2.0)
+## SAC EQR directory screening (v0.2.1)
 
 The default Reference AG3/multi-filter bundles now use the corrected DB/YP v2
 training (three seeds each). The default seed remains 20260928; its thresholds
@@ -113,7 +113,7 @@ summary = model.screen_eqr("/path/to/another_station")
 `screen_eqr(directory, output=None, *, predictor=None, model='reference_multifilter',
 seed=None, model_dir=None, device='cpu', cache_dir=None, gaussian=None,
 batch_size=32, overwrite=False, max_files=None, threshold=None, filters=None,
-resample=False)` recursively reads binary SAC
+resample=False, input_type='eqr')` recursively reads binary SAC
 v6/v7 EQR files. The returned dictionary is also saved at `<output>.json`.
 Default output is `<directory>/record`, containing unique retained EQR basenames,
 one per line with no directory prefixes. Deduplication covers the entire call.
@@ -135,3 +135,12 @@ interface; descriptors remain explicit inputs to `.predict()`.
 
 See [directory format and examples](EQR_SCREENING_zh.md). FCM is evaluated once
 per full station pool, irrespective of neural `batch_size`.
+
+`input_type='files'` accepts filename-bearing text waveform exports, as a
+station/AG directory or a single file. Rows contain filename, delta, start
+sample index, exclusive end sample index, then `end-start` amplitudes. The
+model, threshold, resampling and unique-name record convention are shared.
+Views align by filename, not row position; source paths and row numbers stay
+in CSV sidecars. `max_files` bounds candidate waveform rows in this mode.
+See [files input guide](FILES_SCREENING_zh.md). `/screen-eqr` accepts the same
+`input_type` field; it defaults to `eqr`.

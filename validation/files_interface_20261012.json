@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "scope": "Input-format parity; no ground-truth accuracy claim",
+  "source_files_unchanged": true,
+  "cases": [
+    {
+      "model": "reference_multifilter",
+      "events": 1667,
+      "views": 7,
+      "threshold": 0.9,
+      "good_events": 3,
+      "record_entries": 3,
+      "direct_array_predictions_identical": true,
+      "files_found": 7
+    },
+    {
+      "model": "reference_ag3",
+      "events": 1667,
+      "views": 1,
+      "threshold": 0.86,
+      "good_events": 8,
+      "record_entries": 8,
+      "direct_array_predictions_identical": true,
+      "files_found": 7
+    }
+  ]
+}
