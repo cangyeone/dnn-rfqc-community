@@ -159,11 +159,11 @@
   "pdfs": {
     "main": {
       "pages": 22,
-      "sha256": "19aef16184d76d376cd1384c831bb911927db8956e82fbf2f22c4e29f9c64fd6"
+      "sha256": "7d778f530965dc34382752aed0d4bbbe8991bd784ac3cf74abc67a41c4502f39"
     },
     "supplement": {
-      "pages": 10,
-      "sha256": "892a7ddb1cb751f5998953a6a33e756b20bbef717064b1cf7e4f71eca83e9d2b"
+      "pages": 11,
+      "sha256": "bc3161897b1c154a00dadbf38ff1861f0be8e81d5fd7127bf2ae7143bdc0daba"
     }
   },
   "verifier_sha256": "7f6ef95acb9b9eacc4451e1bef971d9d225a986c07dc33b90e5a25c75ce92b84"
