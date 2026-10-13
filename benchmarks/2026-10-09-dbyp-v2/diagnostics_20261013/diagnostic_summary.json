@@ -1,0 +1,11 @@
+{
+  "full_test_stations": 32,
+  "manual_stack_eligible": 32,
+  "hk_manual_valid": 32,
+  "window": [
+    -2.5,
+    20
+  ],
+  "small_n": 151324,
+  "small_stations": 102
+}

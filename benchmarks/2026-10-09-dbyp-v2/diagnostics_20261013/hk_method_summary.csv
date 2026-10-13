@@ -1,0 +1,11 @@
+method,valid_manual_pairs,median_abs_delta_h_km,median_abs_delta_kappa,boundary_peaks,multiple_peak_flags,half_paired_stations,half_median_abs_delta_h_km,half_median_abs_delta_kappa
+li2021_cnn,32,0.0,0.0,2,11,31,0.0,0.0
+gan2021_cnn,32,0.0,0.0,3,12,31,0.0,0.0
+gong_cnn_bilstm,32,0.0,0.0,2,12,31,0.0,0.0
+gan_cnn,32,0.0,0.0,3,12,31,0.0,0.0
+deeprfqc,32,0.0,0.0,3,12,31,0.0,0.0
+hegaz_capsule,32,0.0,0.0,4,13,31,0.0,0.0
+chen2026_image,32,0.0,0.0,3,13,31,0.0,0.0
+xiong2025_fcm,32,0.5,0.015,5,14,31,0.5,0.01
+reference_ag3,32,0.0,0.0,4,11,31,0.0,0.0
+reference_multifilter,32,0.0,0.0,3,10,31,0.0,0.0

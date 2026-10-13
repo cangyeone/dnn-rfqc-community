@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "method": "xiong2025_fcm",
+  "seed": 20260928,
+  "round": 0,
+  "kind": "fcm",
+  "device": "cpu",
+  "parameters": 8,
+  "records": 27823,
+  "complete_views_selection": false,
+  "views": [
+    1
+  ],
+  "sample_ids_sha256": "a9fcddb974be0ac3c8e83620345e62c93197c36fbb22de5cacf13125d5699aea",
+  "weights_sha256": null,
+  "torch": "2.8.0+cu128",
+  "numpy": "2.5.3",
+  "python": "3.13.5",
+  "platform": "Linux",
+  "cpu_architecture": "x86_64",
+  "threads": 4,
+  "interop_threads": 1,
+  "precision": "Native NumPy/SciPy floating point",
+  "threadpools": [
+    {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 4,
+      "version": null
+    },
+    {
+      "user_api": "blas",
+      "internal_api": "openblas",
+      "num_threads": 4,
+      "version": "0.3.31.dev"
+    },
+    {
+      "user_api": "openmp",
+      "internal_api": "openmp",
+      "num_threads": 4,
+      "version": null
+    },
+    {
+      "user_api": "blas",
+      "internal_api": "openblas",
+      "num_threads": 4,
+      "version": "0.3.34.106.0"
+    }
+  ],
+  "timing_scope": "Resident native RFData to CPU scores/decisions; includes preprocessing and transfers; excludes loading, RF generation, supplied-descriptor extraction and network transport.",
+  "pool_seconds": 1.111202333,
+  "pool_records_per_second": 25038.644334811703,
+  "stations": 32,
+  "warmup_calls": 1,
+  "latency_scope": "Complete station pool; no independent-record latency",
+  "finite_replay": true,
+  "bundle_sha256": "cb0a2a25b9d2adbc128f6a5becbad1bec84b0a6e6171e37de24e90da2e3ce56f",
+  "protocol_sha256": "edc675a5526e82f6d2c67d9ad3847eaf973caf45343751137c3886b418b1dd5e",
+  "timing_code_sha256": "6649afd9bdc8930da5aa3929d0d33ff09a2130910a7ca1a6785f63bb2806a059",
+  "runner_sha256": "4331800acf0822a5868fe68c807206067f9c139676334a99170986f2ade36cae"
+}

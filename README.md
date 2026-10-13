@@ -233,3 +233,7 @@ good 分数不是校准后的物理可用性概率，新地区的适用性仍需
 软件与模型按 GPL-3.0-only 发行，来源与第三方声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 和 [CITATION.cff](CITATION.cff)；软件许可不代表数据集许可。
 问题反馈：[Issues](https://github.com/cangyeone/dnn-rfqc-community/issues)。
+
+## 2026-10-13 论文图表与诊断
+
+本轮模型仍是v0.2.1使用的DB/YP v2权重，参考模型仅波形、从头训练。新的[-2.5,20]秒叠加、方位角相干性、跨滤波关联、条件H–κ和当前权重速度汇总见[诊断结果](benchmarks/2026-10-09-dbyp-v2/diagnostics_20261013/README.md)；[可复现脚本](scripts/paper_revision_20261013/README.md)说明需要哪些私有输入。未加入波形数据或小震级标签；不能把小震级保留量当成准确率，也不声称多频普遍优于单频。库/API及模型资产不变。

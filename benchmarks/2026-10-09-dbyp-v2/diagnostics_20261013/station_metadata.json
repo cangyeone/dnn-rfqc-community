@@ -1,0 +1,1046 @@
+{
+  "coordinates": [
+    {
+      "station": "DB_EW01",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW02",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW03",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW04",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW05",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW06",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW07",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW08",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW09",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW10",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW11",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW12",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW13",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW14",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW15",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW16",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW17",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW18",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW19",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW20",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW21",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW23",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW24",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW26",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW27",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW28",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW29",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW30",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW31",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW32",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW33",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW34",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW35",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW36",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW37",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW38",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW39",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW40",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW41",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW42",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW43",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW44",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW45",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW46",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW47",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW48",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW49",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW50",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW51",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW52",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW53",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW54",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW55",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW56",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW57",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW58",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW59",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW60",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW61",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW62",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW63",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW64",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW65",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW66",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW67",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW68",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW69",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW70",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW71",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW72",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW73",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW74",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW75",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW76",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW77",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW78",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW79",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW80",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "DB_EW81",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE11",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE12",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE21",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE22",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE23",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE31",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE32",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE33",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE34",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE35",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE36",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE37",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE38",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE39",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE3A",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE3B",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE3C",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE41",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE42",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE43",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE44",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE45",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE46",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE47",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE48",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE49",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE4A",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE4B",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE51",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE52",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE53",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE54",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE55",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE56",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE57",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE58",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE59",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE5A",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE5B",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE5C",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE5D",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE5E",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE61",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE62",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE63",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE64",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE65",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE66",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE67",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE68",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE69",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE6A",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE6B",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE6C",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE6D",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE6E",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE6F",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE71",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE72",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE73",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE74",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE75",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE76",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE77",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE78",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE79",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE7A",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE7B",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE7C",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE7D",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE7E",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE7F",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE7G",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE7H",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE81",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE82",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE83",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE84",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE85",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE86",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE87",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE88",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE89",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE8A",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE8B",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE8C",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE8D",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE8E",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE8F",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE8G",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE8H",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE8I",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE91",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE92",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE93",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE94",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE95",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE96",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE97",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE98",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE99",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE9A",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE9B",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE9C",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE9D",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NE9E",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEA1",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEA2",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEA3",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEA4",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEA5",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEA6",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEA7",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEA8",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEA9",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEAA",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEAB",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEAC",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEAD",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEP1",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEP2",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEP3",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEP4",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEP5",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEP6",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "station": "YP_NEP7",
+      "latitude": null,
+      "longitude": null
+    }
+  ],
+  "acquisition": {
+    "gcarc": {
+      "n": 167203,
+      "minimum": 28.000099182128906,
+      "maximum": 91.99949645996094
+    },
+    "magnitude": {
+      "n": 0,
+      "minimum": null,
+      "maximum": null
+    },
+    "ray_parameter": {
+      "n": 167203,
+      "minimum": 0.0,
+      "maximum": 0.08030299842357635
+    }
+  }
+}

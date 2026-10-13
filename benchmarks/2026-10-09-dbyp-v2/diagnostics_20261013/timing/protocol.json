@@ -1,0 +1,25 @@
+{
+  "methods": [
+    "li2021_cnn",
+    "gan2021_cnn",
+    "gong_cnn_bilstm",
+    "gan_cnn",
+    "deeprfqc",
+    "hegaz_capsule",
+    "chen2026_image",
+    "reference_ag3",
+    "reference_multifilter",
+    "xiong2025_fcm"
+  ],
+  "rounds": 3,
+  "seed": 20260928,
+  "gpu_uuid": "GPU-faea7f9b-14c8-100b-fde4-0c29f3b18176",
+  "classification_source": "/home/yuzy/rfqc_complete_data_20261009_v2",
+  "weights_fixed": true,
+  "sample_size": 512,
+  "FCM_pool": 27823,
+  "threads": 4,
+  "timing_code_sha256": "6649afd9bdc8930da5aa3929d0d33ff09a2130910a7ca1a6785f63bb2806a059",
+  "runner_sha256": "4331800acf0822a5868fe68c807206067f9c139676334a99170986f2ade36cae",
+  "scope": "Resident arrays to prediction API, single GPU sequential, FCM full pool CPU"
+}

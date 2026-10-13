@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "script_sha256": "74f21649a20e1336206fcad9f3f95f87f72b2680b55abdf39bbae0bd53567321",
+  "current_method_count": 10,
+  "literature_methods": 8,
+  "reference_methods": 2,
+  "seed_count": 3,
+  "training_runs": 30,
+  "predictions_checked": 834690,
+  "review_path": "../rfqc_revision_20261013/review",
+  "source_path": "../rfqc_revision_20261013/inputs",
+  "diagnostics_path": "../rfqc_revision_20261013/diagnostics"
+}

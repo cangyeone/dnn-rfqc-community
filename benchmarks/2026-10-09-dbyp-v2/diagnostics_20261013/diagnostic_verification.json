@@ -1,0 +1,271 @@
+{
+  "status": "passed",
+  "window": [
+    -2.5,
+    20.0
+  ],
+  "model_seed": 20260928,
+  "subsample_seed": 20261009,
+  "draws": 30,
+  "hk_half_draws": 100,
+  "test_station_checks": [
+    {
+      "station": "DB_EW12",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1685,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW19",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1477,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW27",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1481,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW38",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1491,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW42",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1509,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW46",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1515,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW53",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1516,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW56",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1519,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW59",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1469,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW66",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1362,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW70",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1447,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW76",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1431,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "DB_EW80",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 1441,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE37",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 330,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE4B",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 561,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE53",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 426,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE55",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 529,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE59",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 550,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE64",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 520,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE69",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 494,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE71",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 486,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE72",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 428,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE75",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 535,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE7C",
+      "status": "passed",
+      "primary_peaks_verified": 412,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 320,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE88",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 463,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE8A",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 540,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE8E",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 273,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE8F",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 560,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NE97",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 540,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NEAB",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 498,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NEP1",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 254,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    },
+    {
+      "station": "YP_NEP5",
+      "status": "passed",
+      "primary_peaks_verified": 1212,
+      "maximum_surface_error": 0.0,
+      "n_valid_p": 173,
+      "source_grid": "Original AG3 SAC samples; per-record ray parameters"
+    }
+  ],
+  "small_stations": 102,
+  "script_sha256": "8eb439e37a9c08b6fad76c3196098bd30a2ac57d014afb21e4500a5e7eabeb37"
+}

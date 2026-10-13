@@ -1,0 +1,170 @@
+{
+  "status": "passed",
+  "cohort": "dbyp_complete_20261009_v2",
+  "training_runs": 30,
+  "source_files_verified_remotely": 207,
+  "station_count": 205,
+  "test_count": 27823,
+  "test_stations": 32,
+  "current_configurations": 10,
+  "metrics_recomputed": true,
+  "diagnostic_window": [
+    -2.5,
+    20
+  ],
+  "hk_primary_peaks_checked": 37984,
+  "inference_rounds": 30,
+  "abstract_words": 217,
+  "cited_keys": [
+    "Ammon1991",
+    "BrodersenEtAl2010",
+    "BudaEtAl2018",
+    "BurkyEtAl2021",
+    "CaiEtAl2025PNSN",
+    "ChenEtAl2026",
+    "ChoEtAl2014",
+    "EagarFouch2012",
+    "Fawcett2006",
+    "GanEtAl2021",
+    "GanEtAl2023",
+    "GongEtAl2022",
+    "HegaziEtAl2025",
+    "HendrycksGimpel2016",
+    "HochreiterSchmidhuber1997",
+    "IoffeSzegedy2015",
+    "Langston1979",
+    "LiEtAl2021",
+    "LigorriaAmmon1999",
+    "LoshchilovHutter2019",
+    "MousaviEtAl2020EQT",
+    "MunchmeyerEtAl2022",
+    "ParkLevin2000",
+    "PascanuEtAl2013",
+    "RobertsEtAl2017",
+    "Rondenay2009",
+    "SabermahaniFrederiksen2024",
+    "SaitoRehmsmeier2015",
+    "Vinnik1977",
+    "WoollamEtAl2022",
+    "XiongEtAl2025",
+    "Yu2026RFQCBench",
+    "ZhuBeroza2019",
+    "ZhuKanamori2000"
+  ],
+  "numeric_checks": [
+    {
+      "token": "163,889",
+      "source": "cohort split",
+      "status": "passed"
+    },
+    {
+      "token": "205",
+      "source": "station split",
+      "status": "passed"
+    },
+    {
+      "token": "20,616",
+      "source": "cohort good counts",
+      "status": "passed"
+    },
+    {
+      "token": "143,273",
+      "source": "cohort bad counts",
+      "status": "passed"
+    },
+    {
+      "token": "27,823",
+      "source": "all prediction sets",
+      "status": "passed"
+    },
+    {
+      "token": "2,784",
+      "source": "all test labels",
+      "status": "passed"
+    },
+    {
+      "token": "89.99",
+      "source": "reject-all accuracy",
+      "status": "passed"
+    },
+    {
+      "token": "89.10",
+      "source": "independently recomputed gong_cnn_bilstm/macro_f1",
+      "status": "passed"
+    },
+    {
+      "token": "96.06",
+      "source": "independently recomputed gong_cnn_bilstm/accuracy",
+      "status": "passed"
+    },
+    {
+      "token": "88.74",
+      "source": "independently recomputed gong_cnn_bilstm/good_auprc",
+      "status": "passed"
+    },
+    {
+      "token": "80.02",
+      "source": "independently recomputed gong_cnn_bilstm/good_precision",
+      "status": "passed"
+    },
+    {
+      "token": "90.75",
+      "source": "independently recomputed chen2026_image/balanced_accuracy",
+      "status": "passed"
+    },
+    {
+      "token": "84.66",
+      "source": "independently recomputed chen2026_image/good_recall",
+      "status": "passed"
+    },
+    {
+      "token": "0.25",
+      "source": "paired macro-F1 mean",
+      "status": "passed"
+    },
+    {
+      "token": "0.41",
+      "source": "paired macro-F1 sample SD",
+      "status": "passed"
+    },
+    {
+      "token": "0.11",
+      "source": "paired accuracy mean",
+      "status": "passed"
+    },
+    {
+      "token": "0.23",
+      "source": "paired accuracy sample SD",
+      "status": "passed"
+    },
+    {
+      "token": "151,324",
+      "source": "small-event pools",
+      "status": "passed"
+    },
+    {
+      "token": "2,134",
+      "source": "small AG3 retained",
+      "status": "passed"
+    },
+    {
+      "token": "1,573",
+      "source": "small multi-filter retained",
+      "status": "passed"
+    }
+  ],
+  "atlas_station_count": 32,
+  "small_station_count": 102,
+  "small_physical_diagnostics": "Not performed: no matching baz/p",
+  "pdfs": {
+    "main": {
+      "pages": 22,
+      "sha256": "19aef16184d76d376cd1384c831bb911927db8956e82fbf2f22c4e29f9c64fd6"
+    },
+    "supplement": {
+      "pages": 10,
+      "sha256": "892a7ddb1cb751f5998953a6a33e756b20bbef717064b1cf7e4f71eca83e9d2b"
+    }
+  },
+  "verifier_sha256": "7f6ef95acb9b9eacc4451e1bef971d9d225a986c07dc33b90e5a25c75ce92b84"
+}

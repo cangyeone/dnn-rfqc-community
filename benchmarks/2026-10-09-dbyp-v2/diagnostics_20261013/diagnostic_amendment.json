@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-13",
+  "training_protocol_unchanged": true,
+  "training_protocol_sha256": "edc675a5526e82f6d2c67d9ad3847eaf973caf45343751137c3886b418b1dd5e",
+  "reason": "Provider optimization document dated 2026-10-12 and user confirmation of waveform-only scratch reference",
+  "window": [
+    -2.5,
+    20
+  ],
+  "FCM_restricted_pool": "Recompute station context/features and membership, frozen scaler/centres/threshold",
+  "test_model_seed": 20260928,
+  "paired_draws": 30,
+  "hk_retained_half_draws": 100,
+  "no_new_training": true
+}
